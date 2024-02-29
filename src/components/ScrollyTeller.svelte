@@ -20,6 +20,7 @@
 </script>
 
 <main>
+  <Graph1 {data} />
   <h1>Moore's Law</h1>
   <Scroller
   top={0.0}
@@ -31,7 +32,6 @@
   bind:progress
   >
   <div class="background" slot="background" bind:clientWidth={width} bind:clientHeight={height}>
-    <Graph1 {data} />
   </div>
   
     <div class="foreground" slot="foreground">
