@@ -2,6 +2,8 @@
   import * as d3 from "d3";
 
   export let data;
+  export let index;
+
   let svg, gx, gy;
   let height = 500;
   let width = 800;
@@ -9,7 +11,7 @@
   const margin = {
     top: 20,
     right: 30,
-    bottom: 30,
+    bottom: 50,
     left: 80,
   };
 
@@ -61,12 +63,35 @@
       return i(t);
     };
   }
+
+  let isVisible = false;
+
+  $: if (index === 0) {
+    isVisible = true;
+  }
 </script>
 
 <main>
-  <svg this="{svg}{width}" {height} viewBox="0 0 {width} {height}">
+  <svg
+    class="graph"
+    class:visible={isVisible}
+    this="{svg}{width}"
+    {height}
+    viewBox="0 0 {width} {height}"
+  >
     <!-- x-axis -->
-    <g bind:this={gx} transform="translate(0,{height - margin.bottom})" />
+    <g bind:this={gx} transform="translate(0,{height - margin.bottom})">
+      <text
+        x={width / 2 + 20}
+        y="20"
+        dy="1em"
+        fill="black"
+        text-anchor="middle"
+        font-size="14px"
+      >
+        Year
+      </text>
+    </g>
     <!-- y-axis -->
     <g bind:this={gy} transform="translate({margin.left},0)">
       <text
@@ -75,7 +100,7 @@
         dy="-1em"
         fill="black"
         font-size="14px"
-        transform="translate(-40, {height / 2}) rotate(-90)"
+        transform="translate(-40, {height / 2 - 70}) rotate(-90)"
       >
         Transistor(s)
       </text>
@@ -97,3 +122,10 @@
     </g>
   </svg>
 </main>
+
+<style>
+  .graph.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>

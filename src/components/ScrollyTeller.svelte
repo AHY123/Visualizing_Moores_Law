@@ -21,35 +21,26 @@
 
 <main>
   <h1>Moore's Law</h1>
-  {#if data.length === 0}
-    <p>Loading...</p>
-  {:else}
-    <Graph1 {data}/>
-  {/if}
-
   <Scroller
-    top={0.0}
-    bottom={1}
-    threshold={0.5}
-    bind:count
-    bind:index
-    bind:offset
-    bind:progress
+  top={0.0}
+  bottom={1}
+  threshold={0.5}
+  bind:count
+  bind:index
+  bind:offset
+  bind:progress
   >
-    <div
-      class="background"
-      slot="background"
-      bind:clientWidth={width}
-      bind:clientHeight={height}
-    ></div>
-
+  <div class="background" slot="background" bind:clientWidth={width} bind:clientHeight={height}>
+    <Graph1 {data} />
+  </div>
+  
     <div class="foreground" slot="foreground">
-      <section>This is the first section.</section>
-      <section>This is the second section.</section>
-      <section>This is the third section.</section>
-      <section>This is the fourth section.</section>
-      <section>This is the fifth section.</section>
-      <section>This is the sixth section.</section>
+      <section></section>
+      <section></section>
+      <section></section>
+      <section></section>
+      <section></section>
+      <section></section>
     </div>
   </Scroller>
 </main>
