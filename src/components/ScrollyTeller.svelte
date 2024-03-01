@@ -20,20 +20,24 @@
 </script>
 
 <main>
+  <h1>Visualizing Moore's Law</h1>
   <Graph1 {data} />
-  <h1>Moore's Law</h1>
   <Scroller
-  top={0.0}
-  bottom={1}
-  threshold={0.5}
-  bind:count
-  bind:index
-  bind:offset
-  bind:progress
+    top={0.0}
+    bottom={1}
+    threshold={0.5}
+    bind:count
+    bind:index
+    bind:offset
+    bind:progress
   >
-  <div class="background" slot="background" bind:clientWidth={width} bind:clientHeight={height}>
-  </div>
-  
+    <div
+      class="background"
+      slot="background"
+      bind:clientWidth={width}
+      bind:clientHeight={height}
+    ></div>
+
     <div class="foreground" slot="foreground">
       <section></section>
       <section></section>
@@ -46,6 +50,12 @@
 </main>
 
 <style>
+  @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap");
+
+  h1 {
+    text-align: center;
+    font-family: "Lato", sans-serif;
+  }
   .background {
     width: 100%;
     height: 100vh;
