@@ -73,8 +73,7 @@
 
 <main>
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class = "container"> 
-
+  <div class="container">
     <svg
       class="graph"
       class:visible={isVisible}
@@ -115,10 +114,8 @@
           Transistor(s)
         </text>
       </g>
-      <!-- {#each yAxisTicks as tick}
-        
-      {/each} -->
-      <g stroke="steelblue" stroke-width="1.5">
+
+      <g stroke="black" stroke-width="1.5">
         {#each data.slice(0, -1) as d, i}
           <path
             d={"M" +
@@ -137,6 +134,7 @@
         {/each}
         {#each data as d, i}
           <circle
+            stroke="red"
             key={i}
             cx={x(d.date)}
             cy={y(d.value)}
@@ -144,7 +142,7 @@
             on:mousemove={() => setSelected(d)}
           />
         {/each}
-  
+
         {#if selectedPoint && mousePosition[1] < 450}
           <circle
             cx={x(selectedPoint.date)}
@@ -161,38 +159,39 @@
             fill-opacity="0.1"
             transform="translate({x(selectedPoint.date)}, {margin.top + 10})"
           />
-          {#if mousePosition[0] < margin.right + 300 && margin.left < mousePosition[0]}
+          {#if mousePosition[0] < margin.right + 300 && margin.left < mousePosition[0] && mousePosition[1] > 100}
+            <div class="main-tooltip"></div>
             <g
               class="tooltip"
               transform="translate({mousePosition[0] + 5},{mousePosition[1] -
                 tooltipH})"
             >
               <rect
-                width={tooltipW}
+                class="top-rect"
+                width={tooltipW - 40}
                 height={tooltipH - 20}
-                fill="white"
+                fill="#F0F0F0"
                 stroke="black"
+                opacity="1"
               />
-              <g transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})">
-                <text
-                  class="tooltip-name"
-                  stroke="black"
-                  stroke-width="1"
-                  shape-rendering="crispEdges"
-                >
-                  Year: {selectedPoint.date.getYear() + 1901}
+              <g
+                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+              >
+                <text class="tooltip-year" stroke="red">
+                  {selectedPoint.date.getYear() + 1901}
                 </text>
-                <text
-                  class="tooltip-name"
-                  stroke="black"
-                  y={30}
-                  stroke-width="0.5"
-                >
-                  Transistors: {selectedPoint.value}
+                <text class="tooltip-name" stroke="black" y={30}>
+                  {#if selectedPoint.value > 1e9}
+                    Transistors: {selectedPoint.value / 1e9} billion
+                  {:else if selectedPoint.value > 1e7}
+                    Transistors: {selectedPoint.value / 1e7} million
+                  {:else}
+                    Transistors: {selectedPoint.value}
+                  {/if}
                 </text>
               </g>
             </g>
-          {:else if mousePosition[0] > margin.right + 300}
+          {:else if mousePosition[0] > margin.right + 300 && mousePosition[1] > 100}
             <g
               class="tooltip"
               transform="translate({mousePosition[0] -
@@ -200,27 +199,87 @@
                 5},{mousePosition[1] - tooltipH})"
             >
               <rect
-                width={tooltipW}
-                height={tooltipH}
-                fill="white"
+                class="toolrect"
+                width={tooltipW - 10}
+                height={tooltipH - 20}
+                fill="#F0F0F0"
                 stroke="black"
               />
-              <g transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})">
-                <text
-                  class="tooltip-name"
-                  stroke="black"
-                  stroke-width="1"
-                  shape-rendering="crispEdges"
-                >
-                  Year: {selectedPoint.date.getYear() + 1901}
+              <g
+                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+              >
+                <text class="tooltip-year" stroke="red">
+                  {selectedPoint.date.getYear() + 1901}
                 </text>
-                <text
-                  class="tooltip-name"
-                  stroke="black"
-                  y={50}
-                  stroke-width="0.5"
-                >
-                  Transistors: {selectedPoint.value}
+                <text class="tooltip-name" stroke="black" y={30}>
+                  {#if selectedPoint.value > 1e9}
+                    Transistors: {(selectedPoint.value / 1e9).toFixed(2)} billion
+                  {:else if selectedPoint.value > 1e6}
+                    Transistors: {(selectedPoint.value / 1e6).toFixed(2)} million
+                  {:else}
+                    Transistors: {selectedPoint.value}
+                  {/if}
+                </text>
+              </g>
+            </g>
+          {:else if mousePosition[1] < 100 && mousePosition[0] > margin.right + 300}
+            <g
+              class="tooltip"
+              transform="translate({mousePosition[0] -
+                tooltipW -
+                5},{mousePosition[1] + 25})"
+            >
+              <rect
+                class="toolrect"
+                width={tooltipW - 10}
+                height={tooltipH - 20}
+                fill="#F0F0F0"
+                stroke="black"
+              />
+              <g
+                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+              >
+                <text class="tooltip-year" stroke="red">
+                  {selectedPoint.date.getYear() + 1901}
+                </text>
+                <text class="tooltip-name" stroke="black" y={30}>
+                  {#if selectedPoint.value > 1e9}
+                    Transistors: {(selectedPoint.value / 1e9).toFixed(2)} billion
+                  {:else if selectedPoint.value > 1e6}
+                    Transistors: {(selectedPoint.value / 1e6).toFixed(2)} million
+                  {:else}
+                    Transistors: {selectedPoint.value}
+                  {/if}
+                </text>
+              </g>
+            </g>
+          {:else if mousePosition[0] > 100}
+            <g
+              class="tooltip"
+              transform="translate({mousePosition[0] + 5},{mousePosition[1] +
+                25})"
+            >
+              <rect
+                class="toolrect"
+                width={tooltipW - 10}
+                height={tooltipH - 20}
+                fill="#F0F0F0"
+                stroke="black"
+              />
+              <g
+                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+              >
+                <text class="tooltip-year" stroke="red">
+                  {selectedPoint.date.getYear() + 1901}
+                </text>
+                <text class="tooltip-name" stroke="black" y={30}>
+                  {#if selectedPoint.value > 1e9}
+                    Transistors: {(selectedPoint.value / 1e9).toFixed(2)} billion
+                  {:else if selectedPoint.value > 1e6}
+                    Transistors: {(selectedPoint.value / 1e6).toFixed(2)} million
+                  {:else}
+                    Transistors: {selectedPoint.value}
+                  {/if}
                 </text>
               </g>
             </g>
@@ -252,16 +311,27 @@
     font-size: 18px;
   }
 
+  .top-rect {
+    fill: "#F0F0F0";
+    stroke: "black";
+    opacity: "1";
+  }
+
   .tooltip {
     font-family: "Lato", serif;
     font-size: 16px;
   }
 
-  .tooltip-name {
-    font-family: "Lato", serif;
+  .tooltip-year {
+    font-family: "Lato", sans-serif !important;
     font-size: 16px;
-    fill: "black";
-    font-weight: 300;
+    font-weight: lighter;
+  }
+
+  .tooltip-name {
+    font-family: "Lato", sans-serif !important;
+    font-size: 16px;
+    font-weight: lighter;
   }
 
   .vertical-line {
