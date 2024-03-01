@@ -21,9 +21,8 @@
     .range([margin.left, width - margin.right]);
 
   $: y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, (d) => d.value)])
-    .nice()
+    .scaleLog()
+    .domain([2308, d3.max(data, (d) => d.value)])
     .range([height - margin.bottom, margin.top]);
 
   $: d3.select(gx).call(d3.axisBottom(x).ticks(width / 80));
@@ -31,13 +30,15 @@
   const formatYAxis = (value) => {
     if (value >= 1e9) {
       return `${value / 1e9} billion`;
+    } else if (value >= 1e6) {
+      return `${value / 1e6} million  `;
     } else {
-      return value;
+      return value
     }
   };
 
   $: d3.select(gy)
-    .call(d3.axisLeft(y).tickFormat(formatYAxis).ticks(null, "s"))
+    .call(d3.axisLeft(y).tickFormat(formatYAxis).ticks(7))
     .call((g) =>
       g
         .selectAll(".tick line")
@@ -67,7 +68,6 @@
     const x0 = x.invert(mousePosition[0]);
     const i = bisect(data, x0, 0);
     selectedPoint = { date: data[i].date, value: data[i].value };
-    // console.log(selectedPoint);
   }
 </script>
 
@@ -101,7 +101,11 @@
         </text>
       </g>
       <!-- y-axis -->
-      <g class="axis" bind:this={gy} transform="translate({margin.left},0)">
+      <g
+        class="axis"
+        bind:this={gy}
+        transform="translate({margin.left},{0})"
+      >
         <text
           class="axis-labels"
           x="0"

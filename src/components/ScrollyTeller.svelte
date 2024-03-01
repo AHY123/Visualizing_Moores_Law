@@ -1,6 +1,7 @@
 <script>
   import Scroller from "@sveltejs/svelte-scroller";
-  import Graph1 from "./Graph.svelte";
+  import Graph from "./Graph.svelte";
+  import LogGraph from "./LogGraph.svelte";
   import { onMount } from "svelte";
   import * as d3 from "d3";
 
@@ -21,7 +22,9 @@
 
 <main>
   <h1>Visualizing Moore's Law</h1>
-  <Graph1 {data} />
+  <Graph {data} />
+  <LogGraph {data} />
+
   <Scroller
     top={0.0}
     bottom={1}
