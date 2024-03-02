@@ -119,7 +119,7 @@
     /* outline: green solid 3px; */
   }
   .foreground {
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
     height: auto;
     position: relative;
@@ -168,7 +168,7 @@
     color: white;
     /* outline: magenta solid 3px; */
     text-align: center;
-    max-width: 1000px; /* adjust at will */
+    max-width: 1000%; /* adjust at will */
     color: black;
     padding: 1em;
     margin: 0 0 2em 0;
