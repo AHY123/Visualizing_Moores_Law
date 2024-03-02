@@ -2,15 +2,15 @@
     import * as d3 from "d3";
     // import { onMount } from "svelte";
 
-    // export let index;
+    export let index;
 
-    let isVisible = true;
+    let isVisible = false;
 
-    // $: if (index == 0) {
-    //     isVisible = true;
-    // } else {
-    //     isVisible = false;
-    // }
+    $: if (index == 0) {
+        isVisible = false;
+    } else {
+        isVisible = true;
+    }
     // onMount(() => {
 
     // })
@@ -32,9 +32,19 @@
         display: flex;
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
-        visibility: hidden;
+        visibility: visible;
     }
     .container.visible {
         visibility: visible;
+        animation: fadeOut 2s ;
+        animation-fill-mode: forwards;
+    }
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
     }
 </style>

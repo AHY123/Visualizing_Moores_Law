@@ -64,8 +64,8 @@
         <div class="col_left"></div>
         <div class="col_right">
           <div class="centering_container">
-            {#if index == 0}
-              <TitleScreen />
+            {#if index == 0 || index == 1}
+              <TitleScreen {index}/>
             {/if}
             <!-- {#if index == 1}
               <Graph {data} {index} />
