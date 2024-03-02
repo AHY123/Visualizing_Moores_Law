@@ -73,7 +73,7 @@
             {#if index == 2}
               <LogGraph {data} {index} />
             {/if} -->
-            {#if index == 3}
+            {#if index == 4}
               <WriteUpScreen />
             {/if}
           </div>
@@ -96,6 +96,7 @@
       <section></section>
       <section><Graph {data} {index} /></section>
       <section><LogGraph {data} {index} /></section>
+      <section></section>
       <section></section>
     </div>
   </Scroller>
