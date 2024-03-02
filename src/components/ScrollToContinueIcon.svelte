@@ -19,9 +19,9 @@
     }
 
     onMount(() => {
-        svg = d3.selectAll("svg");
+        svg = d3.select("svg");
 
-        text = svg.selectAll("text");
+        text = svg.select("text");
 
         function repeat() {
             if (index == count - 1) {

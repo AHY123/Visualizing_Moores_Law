@@ -48,7 +48,7 @@
   <Scroller
     top={0.0}
     bottom={1}
-    threshold={0.5}
+    threshold={0.8}
     bind:count
     bind:index
     bind:offset
@@ -67,12 +67,12 @@
             {#if index == 0}
               <TitleScreen />
             {/if}
-            {#if index == 1}
+            <!-- {#if index == 1}
               <Graph {data} {index} />
             {/if}
             {#if index == 2}
               <LogGraph {data} {index} />
-            {/if}
+            {/if} -->
             {#if index == 3}
               <WriteUpScreen />
             {/if}
@@ -94,8 +94,8 @@
 
     <div class="foreground" slot="foreground">
       <section></section>
-      <section></section>
-      <section></section>
+      <section><Graph {data} {index} /></section>
+      <section><LogGraph {data} {index} /></section>
       <section></section>
     </div>
   </Scroller>
@@ -115,6 +115,7 @@
     width: 100%;
     height: 100vh;
     position: relative;
+    /* z-index: 10000; */
     /* outline: green solid 3px; */
   }
   .foreground {
@@ -122,6 +123,7 @@
     margin: 0 auto;
     height: auto;
     position: relative;
+    /* z-index: -10000; */
     /* outline: red solid 3px; */
   }
   .block {
@@ -161,12 +163,12 @@
     justify-content: flex-end;
   }
   section {
-    height: 80vh;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0); /* 20% opaque */
     color: white;
     /* outline: magenta solid 3px; */
     text-align: center;
-    max-width: 750px; /* adjust at will */
+    max-width: 1000px; /* adjust at will */
     color: black;
     padding: 1em;
     margin: 0 0 2em 0;
