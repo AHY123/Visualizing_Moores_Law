@@ -46,11 +46,11 @@
         .attr("stroke-opacity", 0.1)
     );
 
-  let isVisible = false;
+  let isVisible = true;
 
-  $: if (index === 0) {
-    isVisible = true;
-  }
+  // $: if (index === 0) {
+  //   isVisible = true;
+  // }
 
   const tooltipW = 220;
   const tooltipH = 100;
