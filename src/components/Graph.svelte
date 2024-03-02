@@ -101,7 +101,7 @@
         </text>
       </g>
       <!-- y-axis -->
-      <g class="axis" bind:this={gy} transform="translate({margin.left},0)">
+      <g class="axis" bind:this={gy} transform="translate({margin.left + 2},0)">
         <text
           class="axis-labels"
           x="0"

@@ -4,39 +4,45 @@
 
     export let index;
 
-    let isVisible = false;
+    let startFade = false;
 
     $: if (index == 0) {
-        isVisible = false;
+        startFade = false;
     } else {
-        isVisible = true;
+        startFade = true;
     }
     // onMount(() => {
 
     // })
 </script>
 
-<div class='container visible' class:visible={isVisible}>
+<div class='container visible' class:fade={startFade}>
     <h1>
         Visualizing Moore's Law
     </h1>
+    <h2>
+        By Kevin Wong & Andrew H. Yang
+    </h2>
 </div>
 
 <style>
     h1 {
         font-size: 100px;
     }
+    h2 {
+        font-size: 30px;
+    }
     .container {
         width: 100%;
         height: 80%;
         display: flex;
+        flex-flow: column wrap;
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
         visibility: visible;
     }
-    .container.visible {
-        visibility: visible;
-        animation: fadeOut 2s ;
+    .container.fade {
+        animation: fadeOut 0.5s ;
         animation-fill-mode: forwards;
     }
     @keyframes fadeOut {

@@ -96,7 +96,7 @@
       <section></section>
       <section><Graph {data} {index} /></section>
       <section><LogGraph {data} {index} /></section>
-      <section></section>
+      <section class='gap'></section>
       <section></section>
     </div>
   </Scroller>
@@ -174,5 +174,19 @@
     padding: 1em;
     margin: 0 0 2em 0;
     align-items: center;
+
+    position: sticky;
+    top: 10%;
+  }
+  section.hidden {
+    /* visibility: hidden; */
+    animation: fadeOut 1s;
+    animation-fill-mode: forwards;
+  }
+  section.gap {
+    height: 10vh;
+  }
+  @keyframes fadeOut {
+
   }
 </style>

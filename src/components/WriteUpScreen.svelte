@@ -4,7 +4,7 @@
 
     // export let index;
 
-    let isVisible = true;
+    let startFade = true;
 
     // $: if (index == 3) {
     //     isVisible = true;
@@ -16,7 +16,7 @@
     // })
 </script>
 
-<div class="container visible" class:visible={isVisible}>
+<div class="container visible" class:fade={startFade}>
     <h1>Write-Up</h1>
     <h2>
         We looked through the datasets and started cleaning them, making sure
@@ -58,9 +58,8 @@
         align-items: center; /* Center vertically */
         visibility: visible;
     }
-    .container.visible {
-        visibility: visible;
-        animation: fadeIn 3s;
+    .container.fade {
+        animation: fadeIn 1s;
     }
     @keyframes fadeIn {
         0% {
