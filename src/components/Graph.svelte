@@ -2,7 +2,6 @@
   import * as d3 from "d3";
 
   export let data;
-  export let index;
 
   let svg, gx, gy;
   let height = 500;
@@ -159,7 +158,7 @@
             fill-opacity="0.1"
             transform="translate({x(selectedPoint.date)}, {margin.top + 10})"
           />
-          {#if mousePosition[0] < margin.right + 300 && margin.left < mousePosition[0] && mousePosition[1] > 100}
+          {#if mousePosition[0] < margin.right + 300 && margin.left < mousePosition[0] && mousePosition[1] > 100 && mousePosition[0] < 775}
             <div class="main-tooltip"></div>
             <g
               class="tooltip"
@@ -191,7 +190,7 @@
                 </text>
               </g>
             </g>
-          {:else if mousePosition[0] > margin.right + 300 && mousePosition[1] > 100}
+          {:else if mousePosition[0] > margin.right + 300 && mousePosition[1] > 100 && mousePosition[0] < 775}
             <g
               class="tooltip"
               transform="translate({mousePosition[0] -
@@ -222,7 +221,7 @@
                 </text>
               </g>
             </g>
-          {:else if mousePosition[1] < 100 && mousePosition[0] > margin.right + 300}
+          {:else if mousePosition[1] < 100 && mousePosition[0] > margin.right + 300 && mousePosition[0] < 775 && mousePosition[1] > 0}
             <g
               class="tooltip"
               transform="translate({mousePosition[0] -
@@ -253,7 +252,7 @@
                 </text>
               </g>
             </g>
-          {:else if mousePosition[0] > 100}
+          {:else if mousePosition[0] > 100 && mousePosition[0] < 775 && mousePosition[1] > 0}
             <g
               class="tooltip"
               transform="translate({mousePosition[0] + 5},{mousePosition[1] +
