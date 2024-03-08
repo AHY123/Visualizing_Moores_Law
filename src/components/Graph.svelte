@@ -2,6 +2,7 @@
   import * as d3 from "d3";
 
   export let data;
+  export let index;
 
   let svg, gx, gy;
   let height = 500;
