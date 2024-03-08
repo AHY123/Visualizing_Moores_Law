@@ -9,10 +9,10 @@
   let width = 800;
 
   const margin = {
-    top: 20,
-    right: 30,
-    bottom: 50,
-    left: 100,
+    top: 100,
+    right: 80,
+    bottom: 80,
+    left: 130,
   };
 
   $: x = d3
@@ -33,7 +33,7 @@
     } else if (value >= 1e6) {
       return `${value / 1e6} million  `;
     } else {
-      return value
+      return value;
     }
   };
 
@@ -44,14 +44,19 @@
         .selectAll(".tick line")
         .clone()
         .attr("x2", width - margin.right - margin.left)
-        .attr("stroke-opacity", 0.1)
+        .attr("stroke-opacity", 0.1),
     );
 
-  let isVisible = true;
+  let startFade = true;
 
-  // $: if (index === 0) {
-  //   isVisible = true;
-  // }
+  $: {
+    if (index <= 3) {
+      startFade = false;
+    } else {
+      startFade = true;
+      console.log("trying to hide");
+    }
+  }
 
   const tooltipW = 220;
   const tooltipH = 100;
@@ -73,15 +78,27 @@
 
 <main>
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="container">
+  <div class="container" class:fade={startFade}>
     <svg
+      style="border:3px solid black"
       class="graph"
-      class:visible={isVisible}
       this="{svg}{width}"
       {height}
       viewBox="0 0 {width} {height}"
       on:mousemove={setSelected}
     >
+      <!-- title -->
+      <text
+        class="title"
+        x={width/2}
+        y="0"
+        dy="-1em"
+        fill="black"
+        font-size="14px"
+        transform="translate({-370}, {margin.top - 20})"
+      >
+        Plotting Number of Transistors on a Microprocessor Through Time (Log Scale)
+      </text>
       <!-- x-axis -->
       <g
         class="axis"
@@ -91,7 +108,7 @@
         <text
           class="axis-labels"
           x={width / 2 + 20}
-          y="20"
+          y="40"
           dy="1em"
           fill="black"
           text-anchor="middle"
@@ -300,7 +317,19 @@
     display: flex;
     justify-content: center;
   }
-  .graph.visible {
+  .container.fade {
+    animation: fadeOut 0.5s;
+    animation-fill-mode: forwards;
+  }
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .graph {
     opacity: 1;
     visibility: visible;
   }
@@ -313,6 +342,11 @@
   .axis-labels {
     font-family: "Lato", serif;
     font-size: 18px;
+  }
+
+  .title {
+    font-family: "Lato", serif;
+    font-size: 22px;
   }
 
   .top-rect {

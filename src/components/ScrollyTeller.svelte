@@ -5,10 +5,14 @@
   import ScrollToContinueIcon from "./ScrollToContinueIcon.svelte";
   import TitleScreen from "./TitleScreen.svelte";
   import WriteUpScreen from "./WriteUpScreen.svelte";
+  // import StoryGraph from "./StoryGraph.svelte";
   import { onMount } from "svelte";
   import * as d3 from "d3";
 
-  let count, index, offset, progress;
+  let count = 0;
+  let index = 0;
+  let offset = 0;
+  let progress = 0;
   let width, height;
   let timer = null;
   let curtime = null;
@@ -33,7 +37,7 @@
         value: +d["transistors_per_microprocessor"],
       };
     });
-    data = data;
+    console.log(data)
   });
 
   $: {
@@ -42,6 +46,7 @@
     // console.log(index + 1)
     startTime = Date.now();
   }
+  // console.log('script end')
 </script>
 
 <main>
@@ -65,7 +70,7 @@
         <div class="col_right">
           <div class="centering_container">
             {#if index == 0 || index == 1}
-              <TitleScreen {index}/>
+              <TitleScreen {index} />
             {/if}
             <!-- {#if index == 1}
               <Graph {data} {index} />
@@ -73,7 +78,7 @@
             {#if index == 2}
               <LogGraph {data} {index} />
             {/if} -->
-            {#if index == 4}
+            {#if index == 6}
               <WriteUpScreen />
             {/if}
           </div>
@@ -94,9 +99,12 @@
 
     <div class="foreground" slot="foreground">
       <section></section>
-      <section><Graph {data} {index} /></section>
-      <section><LogGraph {data} {index} /></section>
-      <section class='gap'></section>
+      <!-- <section><StoryGraph {data}/></section> -->
+      <section><Graph {data} {index}/></section>
+      <section><LogGraph {data} {index}/></section>
+      <section></section>
+      <section></section>
+      <section class="gap"></section>
       <section></section>
     </div>
   </Scroller>
@@ -187,6 +195,5 @@
     height: 10vh;
   }
   @keyframes fadeOut {
-
   }
 </style>
