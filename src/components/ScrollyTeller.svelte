@@ -2,6 +2,7 @@
   import Scroller from "@sveltejs/svelte-scroller";
   import Graph from "./Graph.svelte";
   import LogGraph from "./LogGraph.svelte";
+  import ComputingCostGraph from "./ComputingCostGraph.svelte";
   import ScrollToContinueIcon from "./ScrollToContinueIcon.svelte";
   import TitleScreen from "./TitleScreen.svelte";
   import WriteUpScreen from "./WriteUpScreen.svelte";
@@ -18,6 +19,7 @@
   let curtime = null;
   let startTime = null;
   let data = [];
+  let cost_data = [];
 
   const startTimer = () => {
     startTime = Date.now();
@@ -37,7 +39,16 @@
         value: +d["transistors_per_microprocessor"],
       };
     });
-    console.log(data)
+    cost_data = await d3.csv("cost_of_computing.csv", (d) => {
+      return {
+        date: new Date(d.Year),
+        memory: +d["memory"],
+        flash: +d["flash"],
+        drives: +d["disk_drives"],
+        ssd: +d["ssd"],
+      };
+    });
+    console.log(cost_data);
   });
 
   $: {
@@ -50,6 +61,7 @@
 </script>
 
 <main>
+  <ComputingCostGraph {cost_data} />
   <Scroller
     top={0.0}
     bottom={1}
@@ -100,8 +112,8 @@
     <div class="foreground" slot="foreground">
       <section></section>
       <!-- <section><StoryGraph {data}/></section> -->
-      <section><Graph {data} {index}/></section>
-      <section><LogGraph {data} {index}/></section>
+      <section><Graph {data} {index} /></section>
+      <section><LogGraph {data} {index} /></section>
       <section></section>
       <section></section>
       <section class="gap"></section>
