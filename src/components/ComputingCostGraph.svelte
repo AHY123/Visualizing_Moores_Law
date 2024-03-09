@@ -8,6 +8,10 @@
   let height = 500;
   let width = 800;
 
+  let RED = "#C05065";
+  let BLUE = "#192B56";
+  let GREEN = "#2D8465";
+
   const margin = {
     top: 100,
     right: 80,
@@ -18,11 +22,11 @@
   $: x = d3
     .scaleTime()
     .domain([new Date("1955"), d3.max(cost_data, (d) => d.date)])
-    .range([margin.left, width - margin.right]);
+    .range([margin.left, width - margin.right - 30]);
 
   $: y = d3
     .scaleLog()
-    .domain([10, d3.max(cost_data, (d) => d.memory)])
+    .domain([7, d3.max(cost_data, (d) => d.memory)])
     .range([height - margin.bottom, margin.top]);
 
   $: d3.select(gx).call(d3.axisBottom(x).ticks(10));
@@ -45,7 +49,7 @@
       g
         .selectAll(".tick line")
         .clone()
-        .attr("x2", width - margin.right - margin.left)
+        .attr("x2", width - margin.right - margin.left - 30)
         .attr("stroke-opacity", 0.1)
     );
 
@@ -74,7 +78,13 @@
     mousePosition = d3.pointer(event);
     const x0 = x.invert(mousePosition[0]);
     const i = bisect(cost_data, x0, 0);
-    selectedPoint = { date: cost_data[i].date, value: cost_data[i].memory };
+    selectedPoint = {
+      date: cost_data[i].date,
+      memory: cost_data[i].memory,
+      flash: cost_data[i].flash,
+      drives: cost_data[i].drives,
+      ssd: cost_data[i].ssd,
+    };
   }
 
   function findNextNonZero(data, start, key) {
@@ -84,6 +94,42 @@
       }
     }
     return null;
+  }
+
+  function formatNumber(value) {
+    if (value >= 1e12) {
+      return (value / 1e12).toFixed(2) + " trillion";
+    } else if (value >= 1e9) {
+      return (value / 1e9).toFixed(2) + " billion";
+    } else if (value >= 1e6) {
+      return (value / 1e6).toFixed(2) + " million";
+    } else {
+      return value.toString();
+    }
+  }
+
+  function getToolTipText(selectedPoint) {
+    let year = selectedPoint.date.getYear() + 1901;
+    let variables = ["memory", "flash", "drives"];
+    let selectedValues = {};
+
+    selectedValues.year = year;
+
+    for (let variable of variables) {
+      if (selectedPoint[variable] !== 0) {
+        let capitalizedVariable =
+          variable.charAt(0).toUpperCase() + variable.slice(1);
+        selectedValues[capitalizedVariable] = formatNumber(
+          selectedPoint[variable]
+        );
+      }
+    }
+
+    if (selectedPoint["ssd"] !== 0) {
+      selectedValues.SSD = formatNumber(selectedPoint.ssd);
+    }
+
+    return selectedValues;
   }
 </script>
 
@@ -98,10 +144,40 @@
       viewBox="0 0 {width} {height}"
       on:mousemove={setSelected}
     >
+      <!-- legend -->
+      <rect
+        width="10"
+        height="2"
+        fill={RED}
+        transform="translate({700}, {357})"
+      />
+      <text x="716" y="363" fill={RED}>Memory</text>
+      <rect
+        width="10"
+        height="2"
+        fill={GREEN}
+        transform="translate({700}, {413})"
+      />
+      <text x="716" y="418" fill={GREEN}>Disk</text>
+      <rect
+        width="10"
+        height="2"
+        fill={BLUE}
+        transform="translate({700}, {377})"
+      />
+      <text x="716" y="382" fill={BLUE}>Flash</text>
+      <rect
+        width="10"
+        height="2"
+        fill="orange"
+        transform="translate({700}, {396})"
+      />
+      <text x="716" y="401" fill="orange">SSD</text>
+
       <!-- title -->
       <text
         class="title"
-        x={width / 2}
+        x={width / 2 + 35}
         y="0"
         dy="-1em"
         fill="black"
@@ -147,9 +223,14 @@
         </text>
       </g>
 
+      <!-- adding dots and lines -->
       <g stroke="black" stroke-width="1.5">
         {#each cost_data.slice(0, -1) as d, i}
-          {@const nextNonZeroMemory = findNextNonZero(cost_data, i + 1, "memory")}
+          {@const nextNonZeroMemory = findNextNonZero(
+            cost_data,
+            i + 1,
+            "memory"
+          )}
           {#if nextNonZeroMemory !== null}
             <path
               d={"M" +
@@ -162,11 +243,11 @@
                 "," +
                 y(nextNonZeroMemory.value)}
               fill="none"
-              stroke="red"
+              stroke={RED}
               stroke-width="2"
             />
           {/if}
-          {@const nextNonZeroFlash = findNextNonZero(cost_data, i + 1, 'flash')}
+          {@const nextNonZeroFlash = findNextNonZero(cost_data, i + 1, "flash")}
           {#if nextNonZeroFlash !== null}
             <path
               d={"M" +
@@ -179,11 +260,15 @@
                 "," +
                 y(nextNonZeroFlash.value)}
               fill="none"
-              stroke="blue"
+              stroke={BLUE}
               stroke-width="2"
             />
           {/if}
-          {@const nextNonZeroDrives = findNextNonZero(cost_data, i + 1, 'drives')}
+          {@const nextNonZeroDrives = findNextNonZero(
+            cost_data,
+            i + 1,
+            "drives"
+          )}
           {#if nextNonZeroDrives !== null}
             <path
               d={"M" +
@@ -196,11 +281,11 @@
                 "," +
                 y(nextNonZeroDrives.value)}
               fill="none"
-              stroke="#2D8465"
+              stroke={GREEN}
               stroke-width="2"
             />
           {/if}
-          {@const nextNonZeroSsd = findNextNonZero(cost_data, i + 1, 'ssd')}
+          {@const nextNonZeroSsd = findNextNonZero(cost_data, i + 1, "ssd")}
           {#if nextNonZeroSsd !== null}
             <path
               d={"M" +
@@ -221,12 +306,12 @@
         {#each cost_data as d, i}
           {#if d.memory != 0}
             <circle
-              stroke="red"
-              fill = "red"
+              stroke={RED}
+              fill={RED}
               key={i}
               cx={x(d.date)}
               cy={y(d.memory)}
-              r="2.5"
+              r="1.5"
               on:mousemove={() => setSelected(d)}
             />
           {/if}
@@ -234,12 +319,12 @@
         {#each cost_data as d, i}
           {#if d.flash != 0}
             <circle
-              stroke="blue"
-              fill = "blue"
+              stroke={BLUE}
+              fill={BLUE}
               key={i}
               cx={x(d.date)}
               cy={y(d.flash)}
-              r="2.5"
+              r="1.5"
               on:mousemove={() => setSelected(d)}
             />
           {/if}
@@ -247,12 +332,12 @@
         {#each cost_data as d, i}
           {#if d.drives != 0}
             <circle
-              stroke="#2D8465"
-              fill = "#2D8465"
+              stroke={GREEN}
+              fill={GREEN}
               key={i}
               cx={x(d.date)}
               cy={y(d.drives)}
-              r="2.5"
+              r="1.5"
               on:mousemove={() => setSelected(d)}
             />
           {/if}
@@ -261,38 +346,71 @@
           {#if d.ssd != 0}
             <circle
               stroke="orange"
-              fill = "orange"
+              fill="orange"
               key={i}
               cx={x(d.date)}
               cy={y(d.ssd)}
-              r="2.5"
+              r="1.5"
               on:mousemove={() => setSelected(d)}
             />
           {/if}
         {/each}
 
-        <!-- {#if selectedPoint && mousePosition[1] < 450}
-          <circle
-            cx={x(selectedPoint.date)}
-            cy={y(selectedPoint.memory)}
-            r="5"
-            fill="red"
-          />
+        {#if selectedPoint && mousePosition[1] < 450}
+          <!-- added bigger dots when hovered over -->
+          {#if selectedPoint.memory != 0}
+            <circle
+              cx={x(selectedPoint.date)}
+              cy={y(selectedPoint.memory)}
+              r="5"
+              fill={RED}
+            />
+          {/if}
+          {#if selectedPoint.flash != 0}
+            <circle
+              cx={x(selectedPoint.date)}
+              cy={y(selectedPoint.flash)}
+              r="5"
+              fill={BLUE}
+            />
+          {/if}
+          {#if selectedPoint.drives != 0}
+            <circle
+              cx={x(selectedPoint.date)}
+              cy={y(selectedPoint.drives)}
+              r="5"
+              fill={GREEN}
+            />
+          {/if}
+          {#if selectedPoint.ssd != 0}
+            <circle
+              cx={x(selectedPoint.date)}
+              cy={y(selectedPoint.ssd)}
+              r="5"
+              fill="orange"
+            />
+          {/if}
+
+          <!-- added vertical line -->
           <rect
             class="vertical-line"
             width="1"
-            height={420}
+            height={310}
             stroke="gray"
             stroke-opacity="0.1"
             fill-opacity="0.1"
             transform="translate({x(selectedPoint.date)}, {margin.top + 10})"
           />
-          {#if mousePosition[0] < margin.right + 300 && margin.left < mousePosition[0] && mousePosition[1] > 100 && mousePosition[0] < 775}
-            <div class="main-tooltip"></div>
+
+          <!-- added tooltip -->
+          <div class="main-tooltip"></div>
+          {#if mousePosition[0] < margin.right + 300 && mousePosition[0] > margin.left && mousePosition[1] > 190 && mousePosition[1] < 420}
+            {@const values = getToolTipText(selectedPoint)}
             <g
               class="tooltip"
-              transform="translate({mousePosition[0] + 5},{mousePosition[1] -
-                tooltipH})"
+              transform="translate({mousePosition[0] + 25},{mousePosition[1] -
+                tooltipH +
+                5})"
             >
               <rect
                 class="top-rect"
@@ -302,117 +420,119 @@
                 stroke="black"
                 opacity="1"
               />
-              <g
-                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text
+                x={52}
+                dy={20}
+                stroke="black"
+                stroke-width="0.5"
+                font-size="14px"
               >
-                <text class="tooltip-year" stroke="red">
-                  {selectedPoint.date.getYear() + 1901}
-                </text>
-                <text class="tooltip-name" stroke="black" y={30}>
-                  {#if selectedPoint.value > 1e9}
-                    Transistors: {selectedPoint.value / 1e9} billion
-                  {:else if selectedPoint.value > 1e7}
-                    Transistors: {selectedPoint.value / 1e7} million
-                  {:else}
-                    Transistors: {selectedPoint.value}
-                  {/if}
-                </text>
-              </g>
+                in $ per TB
+              </text>
+              {#each Object.entries(values) as [name, value], i}
+                {#if name !== "year"}
+                  <text x={10} dy={i * 25 + 20} font-weight="lighter"
+                    >{name}: {value}</text
+                  >
+                {/if}
+              {/each}
             </g>
-          {:else if mousePosition[0] > margin.right + 300 && mousePosition[1] > 100 && mousePosition[0] < 775}
+          {:else if mousePosition[0] >= margin.right + 300 && mousePosition[0] < width - margin.right - 25 && mousePosition[1] > 190 && mousePosition[1] < 420}
+            {@const values = getToolTipText(selectedPoint)}
             <g
               class="tooltip"
               transform="translate({mousePosition[0] -
-                tooltipW -
-                5},{mousePosition[1] - tooltipH})"
+                tooltipW +
+                15},{mousePosition[1] - tooltipH + 5})"
             >
               <rect
-                class="toolrect"
-                width={tooltipW - 10}
-                height={tooltipH - 20}
+                class="top-rect"
+                width={tooltipW - 40}
+                height={tooltipH + 5}
                 fill="#F0F0F0"
                 stroke="black"
+                opacity="1"
               />
-              <g
-                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
-              >
-                <text class="tooltip-year" stroke="red">
-                  {selectedPoint.date.getYear() + 1901}
-                </text>
-                <text class="tooltip-name" stroke="black" y={30}>
-                  {#if selectedPoint.value > 1e9}
-                    Transistors: {(selectedPoint.value / 1e9).toFixed(2)} billion
-                  {:else if selectedPoint.value > 1e6}
-                    Transistors: {(selectedPoint.value / 1e6).toFixed(2)} million
-                  {:else}
-                    Transistors: {selectedPoint.value}
-                  {/if}
-                </text>
-              </g>
-            </g>
-          {:else if mousePosition[1] < 100 && mousePosition[0] > margin.right + 300 && mousePosition[0] < 775 && mousePosition[1] > 0}
-            <g
-              class="tooltip"
-              transform="translate({mousePosition[0] -
-                tooltipW -
-                5},{mousePosition[1] + 25})"
-            >
-              <rect
-                class="toolrect"
-                width={tooltipW - 10}
-                height={tooltipH - 20}
-                fill="#F0F0F0"
+              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text
+                x={52}
+                dy={20}
                 stroke="black"
-              />
-              <g
-                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+                stroke-width="0.5"
+                font-size="14px"
               >
-                <text class="tooltip-year" stroke="red">
-                  {selectedPoint.date.getYear() + 1901}
-                </text>
-                <text class="tooltip-name" stroke="black" y={30}>
-                  {#if selectedPoint.value > 1e9}
-                    Transistors: {(selectedPoint.value / 1e9).toFixed(2)} billion
-                  {:else if selectedPoint.value > 1e6}
-                    Transistors: {(selectedPoint.value / 1e6).toFixed(2)} million
-                  {:else}
-                    Transistors: {selectedPoint.value}
-                  {/if}
-                </text>
-              </g>
+                in $ per TB
+              </text>
+              {#each Object.entries(values) as [name, value], i}
+                {#if name !== "year"}
+                  <text x={10} dy={i * 25 + 20} font-weight = "lighter">{name}: {value}</text>
+                {/if}
+              {/each}
             </g>
-          {:else if mousePosition[0] > 100 && mousePosition[0] < 775 && mousePosition[1] > 0}
+          {:else if mousePosition[0] < margin.right + 300 && mousePosition[0] > margin.left && mousePosition[1] <= 190 && mousePosition[1] > 90}
+            {@const values = getToolTipText(selectedPoint)}
             <g
               class="tooltip"
-              transform="translate({mousePosition[0] + 5},{mousePosition[1] +
+              transform="translate({mousePosition[0] + 25},{mousePosition[1] +
                 25})"
             >
               <rect
                 class="toolrect"
-                width={tooltipW - 10}
+                width={tooltipW - 40}
                 height={tooltipH - 20}
                 fill="#F0F0F0"
                 stroke="black"
               />
-              <g
-                transform="translate({tooltipPaddingLeft},{tooltipPaddingTop})"
+              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text
+                x={52}
+                dy={20}
+                stroke="black"
+                stroke-width="0.5"
+                font-size="14px"
               >
-                <text class="tooltip-year" stroke="red">
-                  {selectedPoint.date.getYear() + 1901}
-                </text>
-                <text class="tooltip-name" stroke="black" y={30}>
-                  {#if selectedPoint.value > 1e9}
-                    Transistors: {(selectedPoint.value / 1e9).toFixed(2)} billion
-                  {:else if selectedPoint.value > 1e6}
-                    Transistors: {(selectedPoint.value / 1e6).toFixed(2)} million
-                  {:else}
-                    Transistors: {selectedPoint.value}
-                  {/if}
-                </text>
-              </g>
+                in $ per TB
+              </text>
+              {#each Object.entries(values) as [name, value], i}
+                {#if name !== "year"}
+                  <text x={10} dy={i * 25 + 20} font-weight = "lighter">{name}: {value}</text>
+                {/if}
+              {/each}
+            </g>
+          {:else if mousePosition[0] >= margin.right + 300 && mousePosition[0] < width - margin.right - 25 && mousePosition[1] <= 190 && mousePosition[1] > 90}
+            {@const values = getToolTipText(selectedPoint)}
+            <g
+              class="tooltip"
+              transform="translate({mousePosition[0] -
+                tooltipW -
+                15},{mousePosition[1] + 25})"
+            >
+              <rect
+                class="toolrect"
+                width={tooltipW - 10}
+                height={tooltipH + 5}
+                fill="#F0F0F0"
+                stroke="black"
+              />
+              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text
+                x={52}
+                dy={20}
+                stroke="black"
+                stroke-width="0.5"
+                font-size="14px"
+              >
+                in $ per TB
+              </text>
+              {#each Object.entries(values) as [name, value], i}
+                {#if name !== "year"}
+                  <text x={10} dy={i * 25 + 20} font-weight = "lighter">{name}: {value}</text>
+                {/if}
+              {/each}
             </g>
           {/if}
-        {/if} -->
+        {/if}
       </g>
     </svg>
   </div>
