@@ -153,7 +153,7 @@
                     </section>
                 {:else if sec[1] == "cost"}
                     <section class:fade={sections_fade[sec[0]]}>
-                        <ComputingCostGraph {cost_data} {index}/>
+                        <ComputingCostGraph {cost_data} {index} />
                     </section>
                 {:else}
                     <section class:fade={sections_fade[sec[0]]}></section>
@@ -177,7 +177,7 @@
                         fadeOut="2"
                         title="Starting With a Graph of Linear Scale"
                         left="Plotting data from 1970 to 2021, we can clearly see a exponential relationship."
-                        right="We will be showing a expected Moore's Law exponential line in the Future on the Graph as well"
+                        right="We will be showing an expected Moore's Law exponential line for reference"
                     />
                 {/if}
                 {#if index == 4 || 5}
@@ -185,16 +185,16 @@
                         {index}
                         fadeIn="4"
                         fadeOut="5"
-                        title="Testing using a Log Scale Graph"
-                        left="We see that the points now form a striaght line"
-                        right="We will also add a expected Moore's Law linear line in the future"
+                        title="Presented using a Log Scale Graph"
+                        left="We see that the points now form a straight line with using a log scale"
+                        right="We will add an expected Moore's Law linear line for reference"
                     />
                 {/if}
                 {#if index == 7 || 8}
                     <GenericText
                         {index}
-                        fadeIn=7
-                        fadeOut=8
+                        fadeIn="7"
+                        fadeOut="8"
                         title="Demonstrating How Moore's Law Relates to Costs of Computing Storage"
                         left="You can see that the price of storage has decreased exponentially"
                         right="(This graph also uses a log scale)"
@@ -203,11 +203,11 @@
                 {#if index == 10 || 11}
                     <GenericText
                         {index}
-                        fadeIn=10
-                        fadeOut=11
-                        title="User Playground"
-                        left="Explore the data for yourself! Try different data and scales!"
-                        right="For all of our graphs, we have tool tips and for this graph we have added date filters, options to change axis, and other interactions"
+                        fadeIn="10"
+                        fadeOut="11"
+                        title="Reader Playground"
+                        left="Explore the data for yourself! Try different data and scales! For all of our graphs, we have tool tips and for this graph we have added date filters, options to change axis, and other interactions."
+                        right="The most interesting (and hardest to implement) feature is the double sided slider for date filtering. It is a great feature because it allows readers to explore the data at different time frames. This is especially relevant because then readers could be able to tell that the data followed Moore's Law far better in the earlier years than the recent years"
                     />
                 {/if}
                 {#if index == section_count - 1}
