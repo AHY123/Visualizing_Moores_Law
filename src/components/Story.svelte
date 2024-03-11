@@ -3,10 +3,12 @@
     import { onMount } from "svelte";
     import * as d3 from "d3";
     import Scroller from "@sveltejs/svelte-scroller";
-    import ScrollToContinueIcon from "./ScrollToContinueIcon.svelte";
+    import ScrollToContinueIcon from "./small_components/ScrollToContinueIcon.svelte";
     import TitleScreen from "./TitleScreen.svelte";
     import WriteUpScreen from "./WriteUpScreen.svelte";
     import StoryGraph from "./StoryGraph.svelte";
+    import GenericText from "./GenericText.svelte";
+    import ComputingCostGraph from "./ComputingCostGraph.svelte";
 
     // scoller var
     let count,
@@ -22,6 +24,7 @@
 
     // data var
     let data = [];
+    let cost_data = [];
 
     // collect data and start timer at mount
     onMount(async () => {
@@ -30,6 +33,15 @@
             return {
                 date: new Date(d.Year),
                 value: +d["transistors_per_microprocessor"],
+            };
+        });
+        cost_data = await d3.csv("cost_of_computing.csv", (d) => {
+            return {
+                date: new Date(d.Year),
+                memory: +d["memory"],
+                flash: +d["flash"],
+                drives: +d["disk_drives"],
+                ssd: +d["ssd"],
             };
         });
         // console.log(data);
@@ -54,44 +66,61 @@
     }
 
     // index, section, visibility management
-    const section_settings = [1, "AIO", 3, -1, 1];
-    // const section_dict = ['section', 'gap', 'AIO']
+    const section_settings = [
+        1,
+        "linear",
+        -2,
+        "log",
+        -2,
+        "cost",
+        -2,
+        "linear",
+        -1,
+        -1,
+        1,
+    ];
+    const section_dict = ["section", "gap", "linear", "log", "cost"];
+    let linear = "linear";
+    let log = "log";
     let sections = [];
+    let sections_fade = [];
     let section_count = 0;
     // console.log(sections)
     for (let i = 0; i < section_settings.length; i++) {
         // console.log(section_settings[i]);
-        if (!isNaN(section_settings[i])){
-            // console.log('is number')
+        if (!isNaN(section_settings[i])) {
             for (let j = 0; j < Math.abs(section_settings[i]); j++) {
                 if (section_settings[i] > 0) {
-                    // console.log([section_count, 'section']);
-                    sections.push([section_count, 'section']);
+                    sections.push([section_count, "section"]);
+                } else {
+                    sections.push([section_count, "gap"]);
                 }
-                else {
-                    // console.log([section_count, 'gap']);
-                    sections.push([section_count, 'gap']);
-                }
-                section_count ++
+                section_count++;
+            }
+        } else if (section_settings[i] == "linear") {
+            sections.push([section_count, "linear"]);
+            section_count++;
+        } else if (section_settings[i] == "log") {
+            sections.push([section_count, "log"]);
+            section_count++;
+        } else if (section_settings[i] == "cost") {
+            sections.push([section_count, "cost"]);
+            section_count++;
+        } else {
+            section_count++;
+        }
+        sections_fade.push(false);
+    }
+
+    $: {
+        for (let i = 0; i < sections_fade.length; i++) {
+            if (i + 1 <= index) {
+                sections_fade[i] = true;
+            } else {
+                sections_fade[i] = false;
             }
         }
-        else if (section_settings[i] == 'AIO') {
-            // console.log('its a graph');
-            // console.log([section_count, 'AIO']);
-            sections.push([section_count, 'AIO']);
-            section_count ++;
-        }
-        else {
-            section_count ++;
-        }
-        // console.log(sections)
     }
-    // console.log('Number of sections: ' + section_count)
-    // console.log('sections:' + sections);
-    // for (let i = 0; i < sections.length; i++) {
-    //     console.log(sections[i]);
-    // }
-    // console.log(sections)
 </script>
 
 <main>
@@ -107,14 +136,27 @@
         <div class="foreground" slot="foreground">
             {#each sections as sec}
                 <!-- <p>{sec[0]}{sec[1]}</p> -->
-                {#if sec[1] == 'section'}
-                            <section>{sec[0]}{sec[1]}</section>
-                {:else if sec[1] == 'gap'}
-                            <section class='gap'>{sec[0]}{sec[1]}</section>
-                {:else if sec[1] == "AIO"}
-                    <section>{sec[0]}{sec[1]}<StoryGraph {data}/></section>
+                {#if sec[1] == "section"}
+                    <section class:fade={sections_fade[sec[0]]}></section>
+                {:else if sec[1] == "gap"}
+                    <section
+                        class="gap"
+                        class:fade={sections_fade[sec[0]]}
+                    ></section>
+                {:else if sec[1] == "linear"}
+                    <section class:fade={sections_fade[sec[0]]}>
+                        <StoryGraph {data} display_mode="linear" />
+                    </section>
+                {:else if sec[1] == "log"}
+                    <section class:fade={sections_fade[sec[0]]}>
+                        <StoryGraph {data} display_mode="log" />
+                    </section>
+                {:else if sec[1] == "cost"}
+                    <section class:fade={sections_fade[sec[0]]}>
+                        <ComputingCostGraph {cost_data} {index}/>
+                    </section>
                 {:else}
-                    <section>{sec[0]}{sec[1]}</section>
+                    <section class:fade={sections_fade[sec[0]]}></section>
                 {/if}
             {/each}
         </div>
@@ -123,7 +165,67 @@
             slot="background"
             bind:clientWidth={width}
             bind:clientHeight={height}
-        ></div>
+        >
+            <div class="centering_container">
+                {#if index == 0}
+                    <TitleScreen {index} />
+                {/if}
+                {#if index == 1 || index == 2}
+                    <GenericText
+                        {index}
+                        fadeIn="1"
+                        fadeOut="2"
+                        title="Starting With a Graph of Linear Scale"
+                        left="Plotting data from 1970 to 2021, we can clearly see a exponential relationship."
+                        right="We will be showing a expected Moore's Law exponential line in the Future on the Graph as well"
+                    />
+                {/if}
+                {#if index == 4 || 5}
+                    <GenericText
+                        {index}
+                        fadeIn="4"
+                        fadeOut="5"
+                        title="Testing using a Log Scale Graph"
+                        left="We see that the points now form a striaght line"
+                        right="We will also add a expected Moore's Law linear line in the future"
+                    />
+                {/if}
+                {#if index == 7 || 8}
+                    <GenericText
+                        {index}
+                        fadeIn=7
+                        fadeOut=8
+                        title="Demonstrating How Moore's Law Relates to Costs of Computing Storage"
+                        left="You can see that the price of storage has decreased exponentially"
+                        right="(This graph also uses a log scale)"
+                    />
+                {/if}
+                {#if index == 10 || 11}
+                    <GenericText
+                        {index}
+                        fadeIn=10
+                        fadeOut=11
+                        title="User Playground"
+                        left="Explore the data for yourself! Try different data and scales!"
+                        right="For all of our graphs, we have tool tips and for this graph we have added date filters, options to change axis, and other interactions"
+                    />
+                {/if}
+                {#if index == section_count - 1}
+                    <WriteUpScreen />
+                {/if}
+            </div>
+            <!-- <div class="progress-bars">
+                <p>current section: <strong>{index + 1}/{count}</strong></p>
+                <progress value={count ? (index + 1) / count : 0} />
+                <p>offset in current section</p>
+                <progress value={offset || 0} />
+                <p>total progress</p>
+                <progress value={progress || 0} />
+            </div> -->
+            <div class="scroll_down">
+                <ScrollToContinueIcon {curTime} {count} {index} />
+            </div>
+        </div>
     </Scroller>
 </main>
 
@@ -143,23 +245,57 @@
         width: 100%;
         height: 100vh;
         position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column wrap;
     }
     section {
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0); /* 20% opaque */
+        background-color: rgba(0, 0, 0, 0);
         color: white;
-        outline: magenta solid 3px;
         text-align: center;
-        max-width: 1000%; /* adjust at will */
+        max-width: 1000%;
         color: black;
-        padding: 1em;  
+        padding: 1em;
         margin: 0 0 2em 0;
         align-items: center;
 
         position: sticky;
         top: 10%;
+
+        animation: fadeIn 1s;
+        animation-fill-mode: forwards;
     }
     section.gap {
         height: 10vh;
+    }
+    section.fade {
+        animation: fadeOut 1s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    .centering_container {
+        width: 100%;
+        height: 92%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column wrap;
     }
 </style>

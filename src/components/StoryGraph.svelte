@@ -6,6 +6,7 @@
 
     // exports
     export let data = [];
+    export let display_mode = "linear";
 
     // svg var
     let svg, gx, gy;
@@ -20,7 +21,6 @@
     };
 
     let isVisible = true;
-    let display_mode = "linear";
     let title;
 
     // double range slider var
@@ -28,11 +28,9 @@
     let end;
     let min = 1970;
     let max = 2021;
+
     // plot_data
     $: round_convert = (d) => {
-        // console.log(d3.max(data, (d) => d.date))
-        // max = d3.max(data, (d) => d.date).getFullYear()
-        // min = d3.min(data, (d) => d.date).getFullYear()
         let x = (max - min) * d + min;
         if (!x && x !== 0) return "";
         return x.toFixed(0);
@@ -45,6 +43,7 @@
         plot_data = [];
         for (let i = 0; i < data.length; i++) {
             let data_point = data[i];
+            // console.log([start, end]);
             if (
                 (round_convert(start) <= data_point.date.getFullYear()) &
                 (round_convert(end) >= data_point.date.getFullYear())
@@ -116,7 +115,6 @@
                 .call((g) =>
                     g
                         .selectAll(".tick line")
-                        // .clone()
                         .attr("x2", width - margin.right - margin.left)
                         .attr("stroke-opacity", 0.1),
                 );
@@ -128,7 +126,6 @@
                 .call((g) =>
                     g
                         .selectAll(".tick line")
-                        // .clone()
                         .attr("x2", width - margin.right - margin.left)
                         .attr("stroke-opacity", 0.1),
                 );
@@ -155,20 +152,14 @@
     let tooltip_pos = [0, 0];
     $: {
         if (mousePosition[1] < margin.top + tooltipH + tooltipPaddingTop) {
-            console.log('below')
-            tooltip_pos[1] = mousePosition[1] + tooltipPaddingTop
-        }
-        else {
-            console.log('top')
-            tooltip_pos[1] = mousePosition[1] - tooltipH - tooltipPaddingTop
+            tooltip_pos[1] = mousePosition[1] + tooltipPaddingTop;
+        } else {
+            tooltip_pos[1] = mousePosition[1] - tooltipH - tooltipPaddingTop;
         }
         if (mousePosition[0] < margin.left + tooltipW + tooltipPaddingLeft) {
-            console.log('right')
-            tooltip_pos[0] = mousePosition[0] + tooltipPaddingLeft
-        }
-        else {
-            console.log('left')
-            tooltip_pos[0] = mousePosition[0] - tooltipW - tooltipPaddingLeft
+            tooltip_pos[0] = mousePosition[0] + tooltipPaddingLeft;
+        } else {
+            tooltip_pos[0] = mousePosition[0] - tooltipW - tooltipPaddingLeft;
         }
     }
 </script>
@@ -290,7 +281,8 @@
                     stroke="black"
                 />
                 <g
-                    transform="translate({tooltipPaddingLeft},{tooltipPaddingTop + 20})"
+                    transform="translate({tooltipPaddingLeft},{tooltipPaddingTop +
+                        20})"
                 >
                     <text class="tooltip-year" stroke="#fb8072" fill="#fb8072">
                         {selectedPoint.date.getYear() + 1901}
@@ -313,11 +305,14 @@
         {/if}
     </svg>
     <div class="svg_width">
+        <hr />
+
         <DoubleRangeSlider bind:start bind:end />
         <div class="labels">
             <div class="label">{round_convert(start)}</div>
             <div class="label">{round_convert(end)}</div>
         </div>
+        <hr />
         <div class="options">
             <div class="label">Choose Graph Display Mode</div>
             <select bind:value={display_mode} class="select label">
@@ -354,14 +349,9 @@
     }
     .options {
         width: 50%;
-        /* display: flex;
-        flex-flow: row wrap; */
     }
     .title {
         font-family: "Lato", serif;
         font-size: 22px;
-    }
-    hr {
-        border-top: 5px solid red;
     }
 </style>

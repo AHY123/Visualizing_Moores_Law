@@ -2,7 +2,7 @@
     import * as d3 from "d3";
     import { onMount } from "svelte";
 
-    export let curtime;
+    export let curTime;
     export let count;
     export let index;
 
@@ -12,7 +12,7 @@
     let svg, text;
 
     let isVisible = true;
-    $: if (curtime >= 3) {
+    $: if (curTime >= 3) {
         isVisible = true;
     } else {
         isVisible = false;
