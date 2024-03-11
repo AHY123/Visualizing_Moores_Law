@@ -136,16 +136,12 @@
     width: 100%;
     height: 100vh;
     position: relative;
-    /* z-index: 10000; */
-    /* outline: green solid 3px; */
   }
   .foreground {
     width: 70%;
     margin: 0 auto;
     height: auto;
     position: relative;
-    /* z-index: -10000; */
-    /* outline: red solid 3px; */
   }
   .block {
     display: flex;
