@@ -75,7 +75,7 @@
         } else if (display_mode == "log") {
             y = d3
                 .scaleLog()
-                .domain([2308, d3.max(data, (d) => d.value)])
+                .domain([2308, 100000000000])
                 .range([height - margin.bottom, margin.top]);
         }
     }
@@ -139,10 +139,21 @@
 
     function setSelected(event) {
         mousePosition = d3.pointer(event);
-        const x0 = x.invert(mousePosition[0]);
-        const i = bisect(plot_data, x0, 0);
-        selectedPoint = { date: plot_data[i].date, value: plot_data[i].value };
-        // console.log(selectedPoint);
+        if (
+            (margin.left < mousePosition[0] && mousePosition[0] < width - margin.right) &&
+            (margin.top < mousePosition[1] && mousePosition[1] < height - margin.bottom)
+            ) {
+            const x0 = x.invert(mousePosition[0]);
+            const i = bisect(plot_data, x0, 0);
+            selectedPoint = {
+                date: plot_data[i].date,
+                value: plot_data[i].value,
+            };
+            // console.log(selectedPoint);
+        }
+        else {
+            selectedPoint = null;
+        }
     }
 
     const tooltipW = 210;
