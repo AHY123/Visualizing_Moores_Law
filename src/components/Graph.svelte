@@ -170,7 +170,7 @@
           <rect
             class="vertical-line"
             width="1"
-            height={420}
+            height={310}
             stroke="gray"
             stroke-opacity="0.1"
             fill-opacity="0.1"
