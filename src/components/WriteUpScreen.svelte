@@ -48,12 +48,13 @@
     }
     h2 {
         font-size: 24px;
+        width: 80%;
     }
     .container {
         width: 100%;
         height: 80%;
         display: flex;
-        flex-flow: column wrap;
+        flex-flow: column;
         justify-content: center; /* Center horizontally */
         align-items: center; /* Center vertically */
         visibility: visible;
