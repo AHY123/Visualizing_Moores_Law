@@ -414,14 +414,17 @@
             >
               <rect
                 class="top-rect"
-                width={tooltipW - 40}
+                width={tooltipW - 35}
                 height={tooltipH - 20}
                 fill="#F0F0F0"
                 stroke="black"
                 opacity="1"
               />
-              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text class="tooltip-year" x={10} dy={20} stroke="red"
+                >{values.year}</text
+              >
               <text
+                class="tooltip-name"
                 x={52}
                 dy={20}
                 stroke="black"
@@ -432,8 +435,8 @@
               </text>
               {#each Object.entries(values) as [name, value], i}
                 {#if name !== "year"}
-                  <text x={10} dy={i * 25 + 20} font-weight="lighter"
-                    >{name}: {value}</text
+                  <text class="tooltip-name" x={10} dy={i * 25 + 20}
+                    >{name}: ${value}</text
                   >
                 {/if}
               {/each}
@@ -448,14 +451,17 @@
             >
               <rect
                 class="top-rect"
-                width={tooltipW - 40}
+                width={tooltipW - 35}
                 height={tooltipH + 5}
                 fill="#F0F0F0"
                 stroke="black"
                 opacity="1"
               />
-              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text class="tootip-year" x={10} dy={20} stroke="red"
+                >{values.year}</text
+              >
               <text
+                class="tooltip-name"
                 x={52}
                 dy={20}
                 stroke="black"
@@ -466,7 +472,9 @@
               </text>
               {#each Object.entries(values) as [name, value], i}
                 {#if name !== "year"}
-                  <text x={10} dy={i * 25 + 20} font-weight = "lighter">{name}: {value}</text>
+                  <text class="tooltip-name" x={10} dy={i * 25 + 20}
+                    >{name}: ${value}</text
+                  >
                 {/if}
               {/each}
             </g>
@@ -479,13 +487,16 @@
             >
               <rect
                 class="toolrect"
-                width={tooltipW - 40}
+                width={tooltipW - 30}
                 height={tooltipH - 20}
                 fill="#F0F0F0"
                 stroke="black"
               />
-              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text class="tooltip-year" x={10} dy={20} stroke="red"
+                >{values.year}</text
+              >
               <text
+                class="tooltip-name"
                 x={52}
                 dy={20}
                 stroke="black"
@@ -496,7 +507,9 @@
               </text>
               {#each Object.entries(values) as [name, value], i}
                 {#if name !== "year"}
-                  <text x={10} dy={i * 25 + 20} font-weight = "lighter">{name}: {value}</text>
+                  <text class="tooltip-name" x={10} dy={i * 25 + 20}
+                    >{name}: ${value}</text
+                  >
                 {/if}
               {/each}
             </g>
@@ -510,13 +523,16 @@
             >
               <rect
                 class="toolrect"
-                width={tooltipW - 10}
+                width={tooltipW - 5}
                 height={tooltipH + 5}
                 fill="#F0F0F0"
                 stroke="black"
               />
-              <text x={10} dy={20} stroke="red">{values.year}</text>
+              <text class="tooltip-year" x={10} dy={20} stroke="red"
+                >{values.year}</text
+              >
               <text
+                class="tooltip-name"
                 x={52}
                 dy={20}
                 stroke="black"
@@ -527,7 +543,9 @@
               </text>
               {#each Object.entries(values) as [name, value], i}
                 {#if name !== "year"}
-                  <text x={10} dy={i * 25 + 20} font-weight = "lighter">{name}: {value}</text>
+                  <text class="tooltip-name" x={10} dy={i * 25 + 20}
+                    >{name}: ${value}</text
+                  >
                 {/if}
               {/each}
             </g>
