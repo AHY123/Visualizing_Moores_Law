@@ -32,10 +32,11 @@
     // collect data and start timer at mount
     onMount(async () => {
         startTimer();
-        data = await d3.csv("transistors.csv", (d) => {
+        data = await d3.csv("transistors_2.csv", (d) => {
             return {
                 date: new Date(d.Year),
                 value: +d["transistors_per_microprocessor"],
+                expected_value: +d["expected_transistors"]
             };
         });
         cost_data = await d3.csv("cost_of_computing.csv", (d) => {

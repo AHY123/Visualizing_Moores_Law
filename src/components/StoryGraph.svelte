@@ -69,7 +69,7 @@
         if (display_mode == "linear") {
             y = d3
                 .scaleLinear()
-                .domain([0, d3.max(plot_data, (d) => d.value)])
+                .domain([0, d3.max([d3.max(plot_data, (d) => d.value), d3.max(plot_data, (d) => d.expected_value)])])
                 .nice()
                 .range([height - margin.bottom, margin.top]);
         } else if (display_mode == "log") {
@@ -232,8 +232,37 @@
             </text>
         </g>
         <g stroke="black" stroke-width="1.5">
+            {#each plot_data.slice(0, -1) as d, i}
+                <path
+                    d={"M" +
+                        x(d.date) +
+                        "," +
+                        y(d.expected_value) +
+                        " " +
+                        "L" +
+                        x(plot_data[i + 1].date) +
+                        "," +
+                        y(plot_data[i + 1].expected_value)}
+                    fill="none"
+                    stroke="gray"
+                    stroke-dasharray='5 2'
+                    stroke-width="2"
+                />
+            {/each}
+            {#each plot_data as d, i}
+                <circle
+                    stroke="#bebada"
+                    fill="#bebada"
+                    key={i}
+                    cx={x(d.date)}
+                    cy={y(d.expected_value)}
+                    r="2"
+                    on:mousemove={() => setSelected(d)}
+                />
+            {/each}
+            
             <!-- Connecting Lines -->
-            {#each data.slice(0, -1) as d, i}
+            {#each plot_data.slice(0, -1) as d, i}
                 <path
                     d={"M" +
                         x(d.date) +
@@ -241,23 +270,23 @@
                         y(d.value) +
                         " " +
                         "L" +
-                        x(data[i + 1].date) +
+                        x(plot_data[i + 1].date) +
                         "," +
-                        y(data[i + 1].value)}
+                        y(plot_data[i + 1].value)}
                     fill="none"
                     stroke="black"
                     stroke-width="2"
                 />
             {/each}
             <!-- Data Points -->
-            {#each data as d, i}
+            {#each plot_data as d, i}
                 <circle
                     stroke="#80b1d3"
                     fill="#80b1d3"
                     key={i}
                     cx={x(d.date)}
                     cy={y(d.value)}
-                    r="2"
+                    r="3"
                     on:mousemove={() => setSelected(d)}
                 />
             {/each}
