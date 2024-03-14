@@ -2,6 +2,7 @@
     // imports
     import { onMount } from "svelte";
     import text_data from "./text_data.json";
+    import milestone_data from "./milestone_data.json"
     import * as d3 from "d3";
     import Scroller from "@sveltejs/svelte-scroller";
     import ScrollToContinueIcon from "./small_components/ScrollToContinueIcon.svelte";
@@ -177,7 +178,7 @@
                     </section>
                 {:else if sec[1] == "cost"}
                     <section class='snapper' class:fade={sections_fade[sec[0]]}>
-                        <!-- <ComputingCostGraph {cost_data} {index} /> -->
+                        <ComputingCostGraph {cost_data} {index} />
                     </section>
                 {:else if sec[1] == "subtitle"}
                     <section class='snapper' class:fade={sections_fade[sec[0]]}>
