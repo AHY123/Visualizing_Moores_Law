@@ -3,15 +3,20 @@
 </script>
 
 <div class='container'>
-    <p>
+    <h1>
+        {text.subtitle}
+    </h1>
+    <h2>
         {text.text}
-    </p>
+    </h2>
 </div>
 
 <style>
-    p {
-        font-size: 32px;
-        text-wrap: balance;
+    h1 {
+        font-size: 90px;
+    }
+    h2 {
+        font-size: 50px;
     }
     .container {
         width: 100%;

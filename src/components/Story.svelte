@@ -1,14 +1,17 @@
 <script>
     // imports
     import { onMount } from "svelte";
+    import text_data from "./text_data.json";
     import * as d3 from "d3";
     import Scroller from "@sveltejs/svelte-scroller";
     import ScrollToContinueIcon from "./small_components/ScrollToContinueIcon.svelte";
     import TitleScreen from "./TitleScreen.svelte";
     import WriteUpScreen from "./WriteUpScreen.svelte";
     import StoryGraph from "./StoryGraph.svelte";
-    import GenericText from "./GenericText.svelte";
+    import GenericLabelText from "./GenericLabelText.svelte";
     import ComputingCostGraph from "./ComputingCostGraph.svelte";
+    import GenericSubtitle from "./GenericSubtitle.svelte";
+    import GenericText from "./GenericText.svelte";
 
     // scoller var
     let count,
@@ -44,7 +47,6 @@
                 ssd: +d["ssd"],
             };
         });
-        // console.log(data);
     });
 
     // defining timer
@@ -68,6 +70,9 @@
     // index, section, visibility management
     const section_settings = [
         1,
+        "subtitle",
+        "text",
+        "text",
         "linear",
         -2,
         "log",
@@ -79,9 +84,18 @@
         -1,
         1,
     ];
-    const section_dict = ["section", "gap", "linear", "log", "cost"];
-    let linear = "linear";
-    let log = "log";
+    // for programmer use
+    const section_dict = [
+        "section",
+        "gap",
+        "linear",
+        "log",
+        "cost",
+        "subtitle",
+        "text",
+    ];
+    // index to text pairs
+    const section_text = text_data;
     let sections = [];
     let sections_fade = [];
     let section_count = 0;
@@ -106,6 +120,12 @@
         } else if (section_settings[i] == "cost") {
             sections.push([section_count, "cost"]);
             section_count++;
+        } else if (section_settings[i] == "subtitle") {
+            sections.push([section_count, "subtitle"]);
+            section_count++;
+        } else if (section_settings[i] == "text") {
+            sections.push([section_count, "text"]);
+            section_count++;
         } else {
             section_count++;
         }
@@ -127,33 +147,44 @@
     <Scroller
         top={0.0}
         bottom={1}
-        threshold={0.8}
+        threshold={0.55}
         bind:count
         bind:index
         bind:offset
         bind:progress
     >
-        <div class="foreground" slot="foreground">
+        <div
+            class="foreground"
+            slot="foreground"
+        >
             {#each sections as sec}
                 <!-- <p>{sec[0]}{sec[1]}</p> -->
                 {#if sec[1] == "section"}
-                    <section class:fade={sections_fade[sec[0]]}></section>
+                    <section class='snapper' class:fade={sections_fade[sec[0]]}></section>
                 {:else if sec[1] == "gap"}
                     <section
                         class="gap"
                         class:fade={sections_fade[sec[0]]}
                     ></section>
                 {:else if sec[1] == "linear"}
-                    <section class:fade={sections_fade[sec[0]]}>
+                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
                         <StoryGraph {data} display_mode="linear" />
                     </section>
                 {:else if sec[1] == "log"}
-                    <section class:fade={sections_fade[sec[0]]}>
+                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
                         <StoryGraph {data} display_mode="log" />
                     </section>
                 {:else if sec[1] == "cost"}
-                    <section class:fade={sections_fade[sec[0]]}>
-                        <ComputingCostGraph {cost_data} {index} />
+                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
+                        <!-- <ComputingCostGraph {cost_data} {index} /> -->
+                    </section>
+                {:else if sec[1] == "subtitle"}
+                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
+                        <GenericSubtitle text={section_text[sec[0]]} />
+                    </section>
+                {:else if sec[1] == "text"}
+                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
+                        <GenericText text={section_text[sec[0]]} />
                     </section>
                 {:else}
                     <section class:fade={sections_fade[sec[0]]}></section>
@@ -166,22 +197,20 @@
             bind:clientWidth={width}
             bind:clientHeight={height}
         >
-            <div class="centering_container">
-                {#if index == 0}
+            <div class="centering_foreground">
+                {#if index == 0 || index == 1}
                     <TitleScreen {index} />
                 {/if}
-                {#if index == 1 || index == 2}
-                    <GenericText
+                {#if index >= 2 || index <= 8}
+                    <GenericLabelText
                         {index}
-                        fadeIn="1"
-                        fadeOut="2"
-                        title="Starting With a Graph of Linear Scale"
-                        left="Plotting data from 1970 to 2021, we can clearly see a exponential relationship."
-                        right="We will be showing an expected Moore's Law exponential line for reference. We will also display relevant and significant milestones in microchip history."
+                        fadeIn="2"
+                        fadeOut="8"
+                        title="Chapter 1: What Is Moore's Law"
                     />
                 {/if}
-                {#if index == 4 || 5}
-                    <GenericText
+                <!-- {#if index == 4 || 5}
+                    <GenericLabelText
                         {index}
                         fadeIn="4"
                         fadeOut="5"
@@ -189,9 +218,9 @@
                         left="We see that the points now form a straight line with using a log scale."
                         right="We will add an expected Moore's Law linear line for reference."
                     />
-                {/if}
-                {#if index == 7 || 8}
-                    <GenericText
+                {/if} -->
+                <!-- {#if index == 7 || 8}
+                    <GenericLabelText
                         {index}
                         fadeIn="7"
                         fadeOut="8"
@@ -199,9 +228,9 @@
                         left="You can see that the price of storage has decreased exponentially. We will explain why and how technological advances take exponential growth."
                         right="(This graph also uses a log scale)"
                     />
-                {/if}
-                {#if index == 10 || 11}
-                    <GenericText
+                {/if} -->
+                <!-- {#if index == 10 || 11}
+                    <GenericLabelText
                         {index}
                         fadeIn="10"
                         fadeOut="11"
@@ -209,7 +238,7 @@
                         left="Explore the data for yourself! Try different data and scales! For all of our graphs, we have tool tips and for this graph we have added date filters, options to change axis, and other interactions."
                         right="The most interesting (and hardest to implement) feature is the double sided slider for date filtering. It is a great feature because it allows readers to explore the data at different time frames. This is especially relevant because then readers could be able to tell that the data followed Moore's Law far better in the earlier years than the recent years."
                     />
-                {/if}
+                {/if} -->
                 {#if index == section_count - 1}
                     <WriteUpScreen />
                 {/if}
@@ -236,10 +265,14 @@
         font-family: "Lato", sans-serif;
     }
     .foreground {
+        /* height: 100vh; */
         width: 70%;
         margin: 0 auto;
         height: auto;
         position: relative;
+
+        /* overflow: auto;
+        scroll-snap-type: y mandatory; */
     }
     .background {
         width: 100%;
@@ -251,7 +284,7 @@
         flex-flow: column wrap;
     }
     section {
-        height: 100vh;
+        height: 90vh;
         background-color: rgba(0, 0, 0, 0);
         color: white;
         text-align: center;
@@ -261,17 +294,21 @@
         margin: 0 0 2em 0;
         align-items: center;
 
-        position: sticky;
-        top: 10%;
+        /* position: sticky; */
+        /* top: 0%; */
 
         animation: fadeIn 1s;
         animation-fill-mode: forwards;
     }
+    section.snapper {
+        scroll-snap-align: start;
+        /* outline: magenta solid 3px; */
+    }
     section.gap {
-        height: 10vh;
+        height: 50vh;
     }
     section.fade {
-        animation: fadeOut 1s;
+        animation: fadeOut 0.5s;
         animation-fill-mode: forwards;
     }
     @keyframes fadeIn {
@@ -290,7 +327,7 @@
             opacity: 0;
         }
     }
-    .centering_container {
+    .centering_foreground {
         width: 100%;
         height: 92%;
         display: flex;

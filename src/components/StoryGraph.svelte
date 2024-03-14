@@ -176,6 +176,7 @@
 </script>
 
 <div class="container" class:visible={isVisible}>
+    <div class='spacer'></div>
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <svg
         class="graph"
@@ -232,7 +233,7 @@
         </g>
         <g stroke="black" stroke-width="1.5">
             <!-- Connecting Lines -->
-            {#each plot_data.slice(0, -1) as d, i}
+            {#each data.slice(0, -1) as d, i}
                 <path
                     d={"M" +
                         x(d.date) +
@@ -240,16 +241,16 @@
                         y(d.value) +
                         " " +
                         "L" +
-                        x(plot_data[i + 1].date) +
+                        x(data[i + 1].date) +
                         "," +
-                        y(plot_data[i + 1].value)}
+                        y(data[i + 1].value)}
                     fill="none"
                     stroke="black"
                     stroke-width="2"
                 />
             {/each}
             <!-- Data Points -->
-            {#each plot_data as d, i}
+            {#each data as d, i}
                 <circle
                     stroke="#80b1d3"
                     fill="#80b1d3"
@@ -338,6 +339,7 @@
 <style>
     .container {
         width: 100%;
+        height: 100%;
         display: flex;
         flex-flow: column wrap;
         justify-content: center;
@@ -364,5 +366,8 @@
     .title {
         font-family: "Lato", serif;
         font-size: 22px;
+    }
+    .spacer {
+        height: 10%;
     }
 </style>

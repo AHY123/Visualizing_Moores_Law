@@ -12,7 +12,7 @@
     let svg, text;
 
     let isVisible = true;
-    $: if (curTime >= 3) {
+    $: if (curTime >= 5) {
         isVisible = true;
     } else {
         isVisible = false;
@@ -28,7 +28,7 @@
                 text.text('~~~~~~~~ THE END! ~~~~~~~~')
             }
             else {
-                text.text('SCROLL DOWN TO CONTINUE ...')
+                text.text('SCROLL OR PRESS SPACE ...')
             }
             text.attr("opacity", 1)
                 .transition()
