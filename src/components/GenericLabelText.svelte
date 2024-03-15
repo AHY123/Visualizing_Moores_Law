@@ -24,13 +24,13 @@
         }
         else {
             remove = false;
-            if (index == fadeIn) {
-                console.log('start fade in')
+            if (fadeIn <= index && index < fadeOut) {
+                // console.log('start fade in')
                 startFadeIn = true;
                 startFadeOut = false;
             }
             if (index == fadeOut) {
-                console.log('start fade out')
+                // console.log('start fade out')
                 startFadeIn = false;
                 startFadeOut = true;
             }
@@ -92,11 +92,11 @@
         visibility: visible;
     }
     .container.fadeIn {
-        animation: fadeIn 1s;
+        animation: fadeIn 0.5s;
         animation-fill-mode: forwards;
     }
     .container.fadeOut {
-        animation: fadeOut 1s;
+        animation: fadeOut 0.5s;
         animation-fill-mode: forwards;
     }
     .container.remove {

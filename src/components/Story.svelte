@@ -2,7 +2,7 @@
     // imports
     import { onMount } from "svelte";
     import text_data from "./text_data.json";
-    import milestone_data from "./milestone_data.json"
+    import milestone_data from "./milestone_data.json";
     import * as d3 from "d3";
     import Scroller from "@sveltejs/svelte-scroller";
     import ScrollToContinueIcon from "./small_components/ScrollToContinueIcon.svelte";
@@ -37,7 +37,7 @@
             return {
                 date: new Date(d.Year),
                 value: +d["transistors_per_microprocessor"],
-                expected_value: +d["expected_transistors"]
+                expected_value: +d["expected_transistors"],
             };
         });
         cost_data = await d3.csv("cost_of_computing.csv", (d) => {
@@ -75,7 +75,8 @@
         "subtitle",
         "text",
         "text",
-        "linear",
+        "milestones",
+        3,
         -2,
         "log",
         -2,
@@ -91,6 +92,7 @@
         "section",
         "gap",
         "linear",
+        'milestones',
         "log",
         "cost",
         "subtitle",
@@ -119,6 +121,9 @@
         } else if (section_settings[i] == "log") {
             sections.push([section_count, "log"]);
             section_count++;
+        } else if (section_settings[i] == "milestones") {
+            sections.push([section_count, "milestones"]);
+            section_count++;
         } else if (section_settings[i] == "cost") {
             sections.push([section_count, "cost"]);
             section_count++;
@@ -136,7 +141,7 @@
 
     $: {
         for (let i = 0; i < sections_fade.length; i++) {
-            if (i + 1 <= index) {
+            if (i < index) {
                 sections_fade[i] = true;
             } else {
                 sections_fade[i] = false;
@@ -155,41 +160,57 @@
         bind:offset
         bind:progress
     >
-        <div
-            class="foreground"
-            slot="foreground"
-        >
+        <div class="foreground" slot="foreground">
             {#each sections as sec}
                 <!-- <p>{sec[0]}{sec[1]}</p> -->
                 {#if sec[1] == "section"}
-                    <section class='snapper' class:fade={sections_fade[sec[0]]}></section>
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <!-- <div class="content_sticky"></div> -->
+                    </section>
                 {:else if sec[1] == "gap"}
-                    <section
-                        class="gap"
-                        class:fade={sections_fade[sec[0]]}
-                    ></section>
+                    <section class="gap" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky"></div>
+                    </section>
                 {:else if sec[1] == "linear"}
-                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
-                        <StoryGraph {data} display_mode="linear" />
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <StoryGraph {data} display_mode="linear" />
+                        </div>
                     </section>
                 {:else if sec[1] == "log"}
-                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
-                        <StoryGraph {data} display_mode="log" />
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <StoryGraph {data} display_mode="log" />
+                        </div>
+                    </section>
+                    {:else if sec[1] == "milestones"}
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <StoryGraph {data} display_mode="linear" is_milestones={true}/>
+                        </div>
                     </section>
                 {:else if sec[1] == "cost"}
-                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
-                        <ComputingCostGraph {cost_data} {index} />
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <ComputingCostGraph {cost_data} {index} />
+                        </div>
                     </section>
                 {:else if sec[1] == "subtitle"}
-                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
-                        <GenericSubtitle text={section_text[sec[0]]} />
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <GenericSubtitle text={section_text[sec[0]]} />
+                        </div>
                     </section>
                 {:else if sec[1] == "text"}
-                    <section class='snapper' class:fade={sections_fade[sec[0]]}>
-                        <GenericText text={section_text[sec[0]]} />
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <GenericText text={section_text[sec[0]]} />
+                        </div>
                     </section>
                 {:else}
-                    <section class:fade={sections_fade[sec[0]]}></section>
+                    <section class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky"></div>
+                    </section>
                 {/if}
             {/each}
         </div>
@@ -207,7 +228,7 @@
                     <GenericLabelText
                         {index}
                         fadeIn="2"
-                        fadeOut="8"
+                        fadeOut="7"
                         title="Chapter 1: What Is Moore's Law"
                     />
                 {/if}
@@ -267,14 +288,11 @@
         font-family: "Lato", sans-serif;
     }
     .foreground {
-        /* height: 100vh; */
+        height: 100vh;
         width: 70%;
         margin: 0 auto;
         height: auto;
         position: relative;
-
-        /* overflow: auto;
-        scroll-snap-type: y mandatory; */
     }
     .background {
         width: 100%;
@@ -288,18 +306,17 @@
     section {
         height: 90vh;
         background-color: rgba(0, 0, 0, 0);
-        color: white;
+        color: black;
         text-align: center;
         max-width: 1000%;
-        color: black;
         padding: 1em;
         margin: 0 0 2em 0;
         align-items: center;
 
-        /* position: sticky; */
-        /* top: 0%; */
+        /* position: sticky;
+        top: 0%; */
 
-        animation: fadeIn 1s;
+        animation: fadeIn 0.5s;
         animation-fill-mode: forwards;
     }
     section.snapper {
@@ -307,7 +324,7 @@
         /* outline: magenta solid 3px; */
     }
     section.gap {
-        height: 50vh;
+        height: 90vh;
     }
     section.fade {
         animation: fadeOut 0.5s;
@@ -336,5 +353,10 @@
         justify-content: center;
         align-items: center;
         flex-flow: column wrap;
+    }
+    .content_sticky {
+        height: 100%;
+        /* position: sticky;
+        top: 0%; */
     }
 </style>

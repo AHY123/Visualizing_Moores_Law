@@ -2,11 +2,13 @@
   // imports
   import * as d3 from "d3";
   import DoubleRangeSlider from "./small_components/DoubleRangeSlider.svelte";
+  import ButtonComponent from "./small_components/ButtonComponent.svelte";
   import { onMount } from "svelte";
 
   // exports
   export let data = [];
   export let display_mode = "linear";
+  export let is_milestones = false;
 
   // svg var
   let svg, gx, gy;
@@ -345,7 +347,13 @@
   </svg>
   <div class="svg_width">
     <hr />
-
+    {#if is_milestones}
+        <div class='labels'>
+            <div class='label'><ButtonComponent text='Last Milestone'/></div>
+            <div class='label'><ButtonComponent text='Next Milestone'/></div>
+        </div>
+        <hr />
+    {/if}
     <DoubleRangeSlider bind:start bind:end />
     <div class="labels">
       <div class="label">{round_convert(start)}</div>
@@ -357,7 +365,7 @@
       <select bind:value={display_mode} class="select label">
         <option value="linear">Linear Scale</option>
         <option value="log">Logarithmic Scale</option>
-        <option value="other">Others</option>
+        <!-- <option value="other">Mile</option> -->
       </select>
     </div>
   </div>

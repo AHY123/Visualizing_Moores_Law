@@ -22,7 +22,7 @@
         <div class="foreground" slot="foreground">
             <!-- <div> -->
                 {#each lol as i}
-                <section>{i}</section>
+                <section><div class='content'>{i}</div></section>
                 {/each}
             <!-- </div> -->
         </div>
@@ -47,8 +47,8 @@
         height: 100vh;
         width: 70%;
         margin: 0 auto;
-        /* height: auto; */
-        /* position: relative; */
+        height: auto;
+        position: relative;
 
         /* overflow: auto;
         scroll-snap-type: y mandatory; */
@@ -73,11 +73,15 @@
         margin: 0 0 2em 0;
         align-items: center;
 
-        position: sticky;
-        top: 10%;
+        /* position: sticky;
+        top: 10%; */
         outline: magenta solid 3px;
     }
     section {
         scroll-snap-align: start;
+    }
+    .content {
+        position: sticky;
+        top: 10%;
     }
 </style>
