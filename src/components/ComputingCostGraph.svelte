@@ -226,12 +226,12 @@
           <path
             d={"M" +
               x(d.date) +
-              "," +
+              " " +
               y(d.memory) +
               " " +
               "L" +
               x(nextNonZeroMemory.date) +
-              "," +
+              " " +
               y(nextNonZeroMemory.value)}
             fill="none"
             stroke={RED}
@@ -243,12 +243,12 @@
           <path
             d={"M" +
               x(d.date) +
-              "," +
+              " " +
               y(d.flash) +
               " " +
               "L" +
               x(nextNonZeroFlash.date) +
-              "," +
+              " " +
               y(nextNonZeroFlash.value)}
             fill="none"
             stroke={BLUE}
@@ -260,12 +260,12 @@
           <path
             d={"M" +
               x(d.date) +
-              "," +
+              " " +
               y(d.drives) +
               " " +
               "L" +
               x(nextNonZeroDrives.date) +
-              "," +
+              " " +
               y(nextNonZeroDrives.value)}
             fill="none"
             stroke={GREEN}
@@ -277,12 +277,12 @@
           <path
             d={"M" +
               x(d.date) +
-              "," +
+              " " +
               y(d.ssd) +
               " " +
               "L" +
               x(nextNonZeroSsd.date) +
-              "," +
+              " " +
               y(nextNonZeroSsd.value)}
             fill="none"
             stroke="orange"

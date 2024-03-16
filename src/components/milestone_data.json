@@ -8,5 +8,6 @@
     "2002": "Intel introduces new material, called uniaxial strained silicon, and boosts transistor performance, heralding a shift into new materials.",
     "2007": "Intel announces a new insulating material for 45 nm technologies, a higher dielectric material that prevents nearly all current from leaking, allowing transistors to switch faster.",
     "2014": "Intel, IBM, TSMC, and Samsung present thier FinFET transistor technology, based on a vertical channel and control gate that wraps around the channel. Allowed 2x the amount of transistors.",
-    "2017": "Sees the adoption of heterogeneous computing in order to specialize processors like GPUs and TPUs alongside CPUs in order to accelerate specific workloads."
+    "2017": "Sees the adoption of heterogeneous computing in order to specialize processors like GPUs and TPUs alongside CPUs in order to accelerate specific workloads.",
+    "2021": null
 }

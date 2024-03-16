@@ -3,12 +3,14 @@
   import * as d3 from "d3";
   import DoubleRangeSlider from "./small_components/DoubleRangeSlider.svelte";
   import ButtonComponent from "./small_components/ButtonComponent.svelte";
+  import milestone_data from "./milestone_data.json";
   import { onMount } from "svelte";
 
   // exports
   export let data = [];
   export let display_mode = "linear";
   export let is_milestones = false;
+  export let milestone_index = 0;
 
   // svg var
   let svg, gx, gy;
@@ -24,6 +26,29 @@
 
   let isVisible = true;
   let title;
+
+  let milestone_list = Object.keys(milestone_data);
+  // console.log(milestone_list)
+
+  function increment() {
+    if (milestone_index < 9) {
+      milestone_index++;
+    }
+  }
+  function decrement() {
+    if (milestone_index > 0) {
+      milestone_index--;
+    }
+  }
+
+  let plot_milestones = [];
+  $: {
+    plot_milestones = [];
+    for (let i = 0; i < milestone_index + 1; i++) {
+      plot_milestones.push(new Date(milestone_list[i], 0, 1));
+    }
+    // console.log(plot_milestones);
+  }
 
   // double range slider var
   let start;
@@ -41,16 +66,29 @@
   // change plot_data based on slider
   let plot_data = [];
   $: {
-    // console.log(data);
     plot_data = [];
-    for (let i = 0; i < data.length; i++) {
-      let data_point = data[i];
-      // console.log([start, end]);
-      if (
-        (round_convert(start) <= data_point.date.getFullYear()) &
-        (round_convert(end) >= data_point.date.getFullYear())
-      ) {
-        plot_data.push(data_point);
+    // console.log(is_milestones);
+    if (is_milestones) {
+      for (let i = 0; i < data.length; i++) {
+        let data_point = data[i];
+        // console.log([start, end]);
+        if (
+          (round_convert(start) <= data_point.date.getFullYear()) &
+          (milestone_list[milestone_index + 1] >= data_point.date.getFullYear())
+        ) {
+          plot_data.push(data_point);
+        }
+      }
+    } else {
+      for (let i = 0; i < data.length; i++) {
+        let data_point = data[i];
+        // console.log([start, end]);
+        if (
+          (round_convert(start) <= data_point.date.getFullYear()) &
+          (round_convert(end) >= data_point.date.getFullYear())
+        ) {
+          plot_data.push(data_point);
+        }
       }
     }
     // console.log(plot_data);
@@ -118,7 +156,7 @@
           g
             .selectAll(".tick line")
             .attr("x2", width - margin.right - margin.left)
-            .attr("stroke-opacity", 0.1)
+            .attr("stroke-opacity", 0.1),
         );
     } else if (display_mode == "log") {
       title =
@@ -129,7 +167,7 @@
           g
             .selectAll(".tick line")
             .attr("x2", width - margin.right - margin.left)
-            .attr("stroke-opacity", 0.1)
+            .attr("stroke-opacity", 0.1),
         );
     }
   }
@@ -234,6 +272,28 @@
         Transistor(s)
       </text>
     </g>
+    {#if is_milestones}
+      {#each plot_milestones as year}
+        <rect
+          class="vertical-line"
+          width="1"
+          height={height - margin.top - margin.bottom}
+          stroke="red"
+          stroke-opacity="0.3"
+          fill-opacity="0.1"
+          transform="translate({x(year)}, {margin.top})"
+        />
+      {/each}
+      <rect
+          class="vertical-line"
+          width="1"
+          height={height - margin.top - margin.bottom}
+          stroke="red"
+          stroke-opacity="0.8"
+          fill-opacity="0.1"
+          transform="translate({x(new Date(milestone_list[milestone_index]))}, {margin.top})"
+        />
+    {/if}
     <g stroke="black" stroke-width="1.5">
       {#each plot_data.slice(0, -1) as d, i}
         <path
@@ -348,18 +408,27 @@
   <div class="svg_width">
     <hr />
     {#if is_milestones}
-        <div class='labels'>
-            <div class='label'><ButtonComponent text='Last Milestone'/></div>
-            <div class='label'><ButtonComponent text='Next Milestone'/></div>
+      <div class="labels">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div class="label" on:click={decrement}>
+          <ButtonComponent text="Last Milestone" />
         </div>
-        <hr />
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        <div class="label" on:click={increment}>
+          <ButtonComponent text="Next Milestone" />
+        </div>
+      </div>
+      <hr />
+    {:else}
+      <DoubleRangeSlider bind:start bind:end />
+      <div class="labels">
+        <div class="label">{round_convert(start)}</div>
+        <div class="label">{round_convert(end)}</div>
+      </div>
+      <hr />
     {/if}
-    <DoubleRangeSlider bind:start bind:end />
-    <div class="labels">
-      <div class="label">{round_convert(start)}</div>
-      <div class="label">{round_convert(end)}</div>
-    </div>
-    <hr />
     <div class="options">
       <div class="label">Choose Graph Display Mode</div>
       <select bind:value={display_mode} class="select label">
@@ -376,7 +445,7 @@
     width: 100%;
     height: 100%;
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column;
     justify-content: center;
     align-items: center;
     visibility: hidden;

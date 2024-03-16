@@ -75,6 +75,7 @@
         "subtitle",
         "text",
         "text",
+        "text",
         "milestones",
         3,
         -2,
@@ -148,6 +149,25 @@
             }
         }
     }
+
+    let left_title = ""
+    let left_text = "";
+    let right_title = "";
+    let right_text = "";
+    let milestone_index = 0;
+    $: {
+        if (section_settings[index] == "milestones") {
+            left_title = "Milestone Explorer"
+            left_text = "Use the buttons to explore the data and learn about the 10 milestones!";
+            right_title = Object.keys(milestone_data)[milestone_index];
+            right_text= "Milestone " + (milestone_index + 1) + ": " + Object.values(milestone_data)[milestone_index];
+        }
+        else {
+            left_text = "";
+            right_title = "";
+            right_text = "";
+        }
+    }
 </script>
 
 <main>
@@ -186,13 +206,13 @@
                     {:else if sec[1] == "milestones"}
                     <section class="snapper" class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky">
-                            <StoryGraph {data} display_mode="linear" is_milestones={true}/>
+                            <StoryGraph {data} display_mode="linear" is_milestones={true} bind:milestone_index/>
                         </div>
                     </section>
                 {:else if sec[1] == "cost"}
                     <section class="snapper" class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky">
-                            <ComputingCostGraph {cost_data} {index} />
+                            <ComputingCostGraph {cost_data} />
                         </div>
                     </section>
                 {:else if sec[1] == "subtitle"}
@@ -229,7 +249,11 @@
                         {index}
                         fadeIn="2"
                         fadeOut="7"
+                        left_title={left_title}
                         title="Chapter 1: What Is Moore's Law"
+                        left={left_text}
+                        right_title={right_title}
+                        right={right_text}
                     />
                 {/if}
                 <!-- {#if index == 4 || 5}
