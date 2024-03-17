@@ -183,7 +183,7 @@
       font-size="14px"
       transform="translate({-370}, {margin.top - 20})"
     >
-      Plotting the Cost Of Components Throughout Time (Logarithmic Scale)
+      Plotting the Cost of Components Through Time (Logarithmic Scale)
     </text>
     <!-- x-axis -->
     <g

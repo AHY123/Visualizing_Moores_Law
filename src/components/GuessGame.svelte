@@ -4,7 +4,7 @@
 
     export let cost_data;
 
-    $: console.log(cost_data);
+    // $: console.log(cost_data);
 
     let data = [];
     let gort = "GB";

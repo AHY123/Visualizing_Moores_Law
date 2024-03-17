@@ -88,7 +88,12 @@
         "text",
         "text",
         "guess",
-        'cost',
+        "text",
+        "cost",
+        "text",
+        "text",
+        -1,
+        "subtitle",
         10,
     ];
     // for programmer use
@@ -248,7 +253,7 @@
                 {:else if sec[1] == "guess"}
                     <section class="snapper" class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky">
-                            <GuessGame {cost_data}/>
+                            <GuessGame {cost_data} />
                         </div>
                     </section>
                 {:else}
@@ -292,11 +297,29 @@
                         right={"Particularly on the Linear Scale, see if we have been following Moore's Law in recent years."}
                     />
                 {/if}
-                {#if index >= 13 && index <= 20}
+                {#if index >= 13 && index <= 16}
                     <GenericLabelText
                         {index}
                         fadeIn="13"
-                        fadeOut="19"
+                        fadeOut="17"
+                        title="Chapter 2: Why Does Moore's Law Matter"
+                    />
+                {/if}
+                {#if index >= 16 && index <= 17}
+                    <GenericLabelText
+                        {index}
+                        fadeIn="16"
+                        fadeOut="18"
+                        title="Chapter 2: Why Does Moore's Law Matter"
+                        left={"Interact with this graph to see how expensive computer components were."}
+                        right={"Remember that this graph is in logarithmic scale so the price of components have indeed been exponentially decreasing."}
+                    />
+                {/if}
+                {#if index >= 17 && index <= 21}
+                    <GenericLabelText
+                        {index}
+                        fadeIn="17"
+                        fadeOut="20"
                         title="Chapter 2: Why Does Moore's Law Matter"
                     />
                 {/if}

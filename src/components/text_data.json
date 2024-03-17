@@ -23,9 +23,25 @@
         "text": "Why Does Moore's Law Matter?"
     },
     "13": {
-        "text": "At first glance, it might seem like Moore’s Law only matters in terms of transistors and computing power. Yet Moore’s Law was a hallmark theory for a reason. Not only did Moore’s Law predict computing power, it also predicted something just as important: cost. The final part of this equation, Moore predicted faster, more efficient, smaller, and CHEAPER."
+        "text": "At first glance, it might seem like Moore's Law only matters in terms of transistors and computing power. Yet Moore's Law was a hallmark theory for a reason. Not only did Moore's Law predict computing power, it also predicted something just as important: cost. The final part of this equation, Moore predicted faster, more efficient, smaller, and CHEAPER."
     },
     "14": {
-        "text": "We plotted out the costs of memory, flash, SSD, and disk drives ever since 1955 and have observed their continual downtrend in costs, which emulates Moore’s Law to a tee — yet instead of having an upwards exponential relationship, this time, they have a major decline in cost. Let’s observe how Moore’s Law affects things other than transistors — this time, in regards to the cost of these computing components "
+        "text": "We plotted out the costs of memory, flash, SSD, and disk drives ever since 1955 and have observed their continual downtrend in costs, which emulates Moore's Law to a tee — yet instead of having an upwards exponential relationship, this time, they have a major decline in cost. Let's observe how Moore's Law affects things other than transistors — this time, in regards to the cost of these computing components "
+    },
+    "16": {
+        "text": "Surprising right? Let's show you what that graph looks like now."
+    },
+    "18": {
+        "text": "Immediately, when we observed the cost of memory in 1956, we were shocked. It's an enormous amount of money, more than I would ever be able to see in my lifetime, all for the cost of a TB of memory."
+    },
+    "19": {
+        "text": "Fortunately, as Moore predicted, the costs of these components became cheaper and cheaper as time went on. However, it seems like we are slowly reaching a hard limit in terms of the costs of these components, as the ending parts of our graph show that there hasn't been much of a decline since 2010."
+    },
+    "21": {
+        "subtitle": "Chapter 3",
+        "text": "Predicting With Moore's Law?"
+    },
+    "num": {
+        "text": "lol"
     }
 }
