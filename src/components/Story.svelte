@@ -13,6 +13,7 @@
     import ComputingCostGraph from "./ComputingCostGraph.svelte";
     import GenericSubtitle from "./GenericSubtitle.svelte";
     import GenericText from "./GenericText.svelte";
+    import GuessGame from "./GuessGame.svelte";
 
     // scoller var
     let count,
@@ -77,27 +78,30 @@
         "text",
         "text",
         "milestones",
-        3,
-        -2,
-        "log",
-        -2,
-        "cost",
-        -2,
+        -1,
+        "text",
+        "text",
+        -1,
         "linear",
         -1,
-        -1,
-        1,
+        "subtitle",
+        "text",
+        "text",
+        "guess",
+        'cost',
+        10,
     ];
     // for programmer use
     const section_dict = [
         "section",
         "gap",
         "linear",
-        'milestones',
+        "milestones",
         "log",
         "cost",
         "subtitle",
         "text",
+        "guess",
     ];
     // index to text pairs
     const section_text = text_data;
@@ -116,25 +120,26 @@
                 }
                 section_count++;
             }
-        } else if (section_settings[i] == "linear") {
-            sections.push([section_count, "linear"]);
-            section_count++;
-        } else if (section_settings[i] == "log") {
-            sections.push([section_count, "log"]);
-            section_count++;
-        } else if (section_settings[i] == "milestones") {
-            sections.push([section_count, "milestones"]);
-            section_count++;
-        } else if (section_settings[i] == "cost") {
-            sections.push([section_count, "cost"]);
-            section_count++;
-        } else if (section_settings[i] == "subtitle") {
-            sections.push([section_count, "subtitle"]);
-            section_count++;
-        } else if (section_settings[i] == "text") {
-            sections.push([section_count, "text"]);
-            section_count++;
+            // } else if (section_settings[i] == "linear") {
+            //     sections.push([section_count, "linear"]);
+            //     section_count++;
+            // } else if (section_settings[i] == "log") {
+            //     sections.push([section_count, "log"]);
+            //     section_count++;
+            // } else if (section_settings[i] == "milestones") {
+            //     sections.push([section_count, "milestones"]);
+            //     section_count++;
+            // } else if (section_settings[i] == "cost") {
+            //     sections.push([section_count, "cost"]);
+            //     section_count++;
+            // } else if (section_settings[i] == "subtitle") {
+            //     sections.push([section_count, "subtitle"]);
+            //     section_count++;
+            // } else if (section_settings[i] == "text") {
+            //     sections.push([section_count, "text"]);
+            //     section_count++;
         } else {
+            sections.push([section_count, section_settings[i]]);
             section_count++;
         }
         sections_fade.push(false);
@@ -150,23 +155,31 @@
         }
     }
 
-    let left_title = ""
+    let left_title = "";
     let left_text = "";
     let right_title = "";
     let right_text = "";
     let milestone_index = 0;
     $: {
         if (section_settings[index] == "milestones") {
-            left_title = "Milestone Explorer"
-            left_text = "Use the buttons to explore the data and learn about the 10 milestones!";
+            left_title = "Milestone Explorer";
+            left_text =
+                "Use the buttons to explore the data and learn about the 10 milestones!";
             right_title = Object.keys(milestone_data)[milestone_index];
-            right_text= "Milestone " + (milestone_index + 1) + ": " + Object.values(milestone_data)[milestone_index];
-        }
-        else {
+            right_text =
+                "Milestone " +
+                (milestone_index + 1) +
+                ": " +
+                Object.values(milestone_data)[milestone_index];
+        } else {
+            left_title = "";
             left_text = "";
             right_title = "";
             right_text = "";
         }
+    }
+    $: {
+        console.log("index: " + index);
     }
 </script>
 
@@ -203,10 +216,15 @@
                             <StoryGraph {data} display_mode="log" />
                         </div>
                     </section>
-                    {:else if sec[1] == "milestones"}
+                {:else if sec[1] == "milestones"}
                     <section class="snapper" class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky">
-                            <StoryGraph {data} display_mode="linear" is_milestones={true} bind:milestone_index/>
+                            <StoryGraph
+                                {data}
+                                display_mode="linear"
+                                is_milestones={true}
+                                bind:milestone_index
+                            />
                         </div>
                     </section>
                 {:else if sec[1] == "cost"}
@@ -227,6 +245,12 @@
                             <GenericText text={section_text[sec[0]]} />
                         </div>
                     </section>
+                {:else if sec[1] == "guess"}
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <GuessGame {cost_data}/>
+                        </div>
+                    </section>
                 {:else}
                     <section class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky"></div>
@@ -244,28 +268,38 @@
                 {#if index == 0 || index == 1}
                     <TitleScreen {index} />
                 {/if}
-                {#if index >= 2 || index <= 8}
+                {#if index >= 3 && index <= 10}
                     <GenericLabelText
                         {index}
-                        fadeIn="2"
-                        fadeOut="7"
-                        left_title={left_title}
+                        fadeIn="3"
+                        fadeOut="9"
                         title="Chapter 1: What Is Moore's Law"
+                        {left_title}
                         left={left_text}
-                        right_title={right_title}
+                        {right_title}
                         right={right_text}
                     />
                 {/if}
-                <!-- {#if index == 4 || 5}
+                {#if index >= 10 && index <= 12}
                     <GenericLabelText
                         {index}
-                        fadeIn="4"
-                        fadeOut="5"
-                        title="Presented using a Log Scale Graph"
-                        left="We see that the points now form a straight line with using a log scale."
-                        right="We will add an expected Moore's Law linear line for reference."
+                        fadeIn="10"
+                        fadeOut="11"
+                        title="Reader Playground"
+                        left_title={"Explore The Data"}
+                        left={"Here we present an interactive visualization of Transistor dataset. Play with the time range to see if you can find anything interesting."}
+                        right_title={"Make Your Own Conclusions"}
+                        right={"Particularly on the Linear Scale, see if we have been following Moore's Law in recent years."}
                     />
-                {/if} -->
+                {/if}
+                {#if index >= 13 && index <= 20}
+                    <GenericLabelText
+                        {index}
+                        fadeIn="13"
+                        fadeOut="19"
+                        title="Chapter 2: Why Does Moore's Law Matter"
+                    />
+                {/if}
                 <!-- {#if index == 7 || 8}
                     <GenericLabelText
                         {index}

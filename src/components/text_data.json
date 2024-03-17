@@ -11,5 +11,21 @@
     },
     "4": {
         "text": "To help you understand the history of Moore's Law, we present the milestones in microchip development history. These milestones are what allowed us to stay consistent with Moore's Law."
+    },
+    "7": {
+        "text": "Yet Moore's Law isn't an all perfect relation. Because of setbacks in innovation, there are inevitabilities that make it so that Moore's Law cannot be a perfect line that doubles every two years. Even so, for the last half-century, it has remained influential because it's a goal that companies strive to achieve. However, now that we are reaching into the second half of the 2020s, there is evidence that Moore's Law is slowly declining."
+    },
+    "8": {
+        "text": "In 2015, Moore himself predicted that Moore's Law would be ending within 10 years, which is approaching soon. We are steadily reaching the theoretical limit for computing power, and, as components continue to shrink, physical limits are also being reached because it's unlikely that we can further shrink transistors to the size of mere atoms."
+    },
+    "12": {
+        "subtitle": "Chapter 2",
+        "text": "Why Does Moore's Law Matter?"
+    },
+    "13": {
+        "text": "At first glance, it might seem like Moore’s Law only matters in terms of transistors and computing power. Yet Moore’s Law was a hallmark theory for a reason. Not only did Moore’s Law predict computing power, it also predicted something just as important: cost. The final part of this equation, Moore predicted faster, more efficient, smaller, and CHEAPER."
+    },
+    "14": {
+        "text": "We plotted out the costs of memory, flash, SSD, and disk drives ever since 1955 and have observed their continual downtrend in costs, which emulates Moore’s Law to a tee — yet instead of having an upwards exponential relationship, this time, they have a major decline in cost. Let’s observe how Moore’s Law affects things other than transistors — this time, in regards to the cost of these computing components "
     }
 }

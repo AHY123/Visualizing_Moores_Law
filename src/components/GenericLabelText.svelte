@@ -16,7 +16,7 @@
     let remove = false;
 
     $: {
-        console.log(index)
+        // console.log(index)
         if (index > fadeOut) {
             remove = true;
             startFadeIn = false;
@@ -58,7 +58,7 @@
         font-size: 36px;
     }
     h2 {
-        font-size: 24px;
+        font-size: 22px;
         height: 10%;
     }
     p {
