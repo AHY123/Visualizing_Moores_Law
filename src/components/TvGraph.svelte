@@ -256,7 +256,7 @@
                         {selectedPoint.year}
                     </text>
                     <text class="tooltip-name" stroke="black" y={30}>
-                        Price: {selectedPoint.inf_adjusted_price}
+                        Price: {selectedPoint.inf_adjusted_price}$
                     </text>
                 </g>
             </g>

@@ -47,6 +47,25 @@
     "23": {
         "text": "In order to do this, we looked through some prices of Colored TVs, starting from when they were created, to the 1990s, when TV prices started to hit lows. We wanted to do this in order to observe if the price of colored TVs also decrease logarithmically and thus adhere to Moore's Law."
     },
+    "26": {
+        "text": "Surprisingly and funnily, we found that the price of colored TV (after accounting for inflation) does follow an exponential decay relationship and thus Moore's Law. In fact, after fitting an exponential line of best fit, we discovered that the price of colored TVs dropped about 5.9% per year."
+    },
+    "27": {
+        "text": "By applying this knowledge with a (massive) stretch, we can predict how other pieces of technology would decrease in price over the years. So, finally, we present the 'TOTALLY ACCURATE TECH PRICE PREDICTOR' (TATPP® for short)."
+    },
+    "29": {
+        "text": "When we apply our observation to technology today, like an Apple Vision Pro ($3499.99), means that you could buy one for $100 in 58 years. You could even buy a SpaceX rocket ($62 million) for $100 in 218 years if this rule holds. Unfortunately but also expectedly, a relationship that we derived using a staggering 5 datapoints most likely will not hold."
+    },
+    "30": {
+        "text": "There are a ton of other factors that go into cost other than a observation that a certain CEO had almost 60 years ago, but that doesn't dissuade from the fact that Moore's Law has been one of the most important observations and rules that has lodged it's way to almost every chip innovation for the last 60 years. Is it dead?"
+    },
+    "31": {
+        "text": "Well, that's really up to you to decide. Who knows, with the ingenuity and smarts from scientists all over the world, perhaps we could see a new golden age for what we now know as Moore's Law. "
+    },
+    "32": {
+        "subtitle": "End of the Curve?",
+        "text": "The End of a Visual Journey of Moore's Law"
+    },
     "num": {
         "text": "lol"
     }

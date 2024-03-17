@@ -15,6 +15,7 @@
     import GenericText from "./GenericText.svelte";
     import GuessGame from "./GuessGame.svelte";
     import TvGraph from "./TvGraph.svelte";
+    import PredictMoore from "./PredictMoore.svelte";
 
     // scoller var
     let count,
@@ -98,7 +99,14 @@
         "text",
         "text",
         "tv",
-        10,
+        -1,
+        "text",
+        "text",
+        "predict",
+        "text",
+        "text",
+        "text",
+        "subtitle",
     ];
     // for programmer use
     const section_dict = [
@@ -112,6 +120,7 @@
         "text",
         "guess",
         "tv,",
+        "predict"
     ];
     // index to text pairs
     const section_text = text_data;
@@ -188,9 +197,9 @@
             right_text = "";
         }
     }
-    $: {
-        console.log("index: " + index);
-    }
+    // $: {
+    //     console.log("index: " + index);
+    // }
 </script>
 
 <main>
@@ -265,6 +274,12 @@
                     <section class="snapper" class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky">
                             <TvGraph/>
+                        </div>
+                    </section>
+                    {:else if sec[1] == "predict"}
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <PredictMoore/>
                         </div>
                     </section>
                 {:else}
@@ -360,9 +375,17 @@
                         right={"DISCLAIMER: the data collection process was not entirely scientific or robust"}
                     />
                 {/if}
-                {#if index == section_count - 1}
-                    <WriteUpScreen />
+                {#if index >= 27 && index <= 33}
+                    <GenericLabelText
+                        {index}
+                        fadeIn="27"
+                        fadeOut="32"
+                        title="Chapter 3: Predicting With Moore's Law?"
+                    />
                 {/if}
+                <!-- {#if index == section_count - 1}
+                    <WriteUpScreen />
+                {/if} -->
             </div>
             <!-- <div class="progress-bars">
                 <p>current section: <strong>{index + 1}/{count}</strong></p>

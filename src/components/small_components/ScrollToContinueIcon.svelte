@@ -28,7 +28,7 @@
                 text.text('~~~~~~~~ THE END! ~~~~~~~~')
             }
             else {
-                text.text('SCROLL OR PRESS SPACE ...')
+                text.text('SCROLL OR PRESS DOWN ...')
             }
             text.attr("opacity", 1)
                 .transition()
