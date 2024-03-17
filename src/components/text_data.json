@@ -1,7 +1,7 @@
 {
     "1": {
         "subtitle": "Chapter 1",
-        "text": "What Is Moore's Law?"
+        "text": "What is Moore's Law?"
     },
     "2": {
         "text": "Moore's Law, created in 1965 by Gordon Moore, is based on the idea that the amount of transistors in a computer would double every two years. Shockingly, this rule has remained as a golden rule in technological innovation for the last 50 years, as our computational progress has roughly remained on this track."
@@ -40,6 +40,12 @@
     "21": {
         "subtitle": "Chapter 3",
         "text": "Predicting With Moore's Law?"
+    },
+    "22": {
+        "text": "Moore's Law seems to be almost a universally agreed upon rule within the tech industry mostly because of how well it has translated and predicted the future, especially within the field of micro-transistors and chips. But how well does it actually do in terms of predicting other technological inventions that are commonplace in households today, like phones, tablets, fridges, and more?"
+    },
+    "23": {
+        "text": "In order to do this, we looked through some prices of Colored TVs, starting from when they were created, to the 1990s, when TV prices started to hit lows. We wanted to do this in order to observe if the price of colored TVs also decrease logarithmically and thus adhere to Moore's Law."
     },
     "num": {
         "text": "lol"

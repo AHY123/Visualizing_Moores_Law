@@ -14,6 +14,7 @@
     import GenericSubtitle from "./GenericSubtitle.svelte";
     import GenericText from "./GenericText.svelte";
     import GuessGame from "./GuessGame.svelte";
+    import TvGraph from "./TvGraph.svelte";
 
     // scoller var
     let count,
@@ -94,6 +95,9 @@
         "text",
         -1,
         "subtitle",
+        "text",
+        "text",
+        "tv",
         10,
     ];
     // for programmer use
@@ -107,6 +111,7 @@
         "subtitle",
         "text",
         "guess",
+        "tv,",
     ];
     // index to text pairs
     const section_text = text_data;
@@ -256,6 +261,12 @@
                             <GuessGame {cost_data} />
                         </div>
                     </section>
+                {:else if sec[1] == "tv"}
+                    <section class="snapper" class:fade={sections_fade[sec[0]]}>
+                        <div class="content_sticky">
+                            <TvGraph/>
+                        </div>
+                    </section>
                 {:else}
                     <section class:fade={sections_fade[sec[0]]}>
                         <div class="content_sticky"></div>
@@ -323,26 +334,32 @@
                         title="Chapter 2: Why Does Moore's Law Matter"
                     />
                 {/if}
-                <!-- {#if index == 7 || 8}
+                {#if index >= 17 && index <= 21}
                     <GenericLabelText
                         {index}
-                        fadeIn="7"
-                        fadeOut="8"
-                        title="Demonstrating How Moore's Law Relates to Costs of Computing Storage"
-                        left="You can see that the price of storage has decreased exponentially. We will explain why and how technological advances take exponential growth."
-                        right="(This graph also uses a log scale)"
+                        fadeIn="17"
+                        fadeOut="20"
+                        title="Chapter 2: Why Does Moore's Law Matter"
                     />
-                {/if} -->
-                <!-- {#if index == 10 || 11}
+                {/if}
+                {#if index >= 22 && index <= 23}
                     <GenericLabelText
                         {index}
-                        fadeIn="10"
-                        fadeOut="11"
-                        title="Reader Playground"
-                        left="Explore the data for yourself! Try different data and scales! For all of our graphs, we have tool tips and for this graph we have added date filters, options to change axis, and other interactions."
-                        right="The most interesting (and hardest to implement) feature is the double sided slider for date filtering. It is a great feature because it allows readers to explore the data at different time frames. This is especially relevant because then readers could be able to tell that the data followed Moore's Law far better in the earlier years than the recent years."
+                        fadeIn="22"
+                        fadeOut="24"
+                        title="Chapter 3: Predicting With Moore's Law?"
                     />
-                {/if} -->
+                {/if}
+                {#if index >= 24 && index <= 26}
+                    <GenericLabelText
+                        {index}
+                        fadeIn="24"
+                        fadeOut="25"
+                        title="Chapter 3: Predicting With Moore's Law?"
+                        left={"Interact with this graph to see the prices of colored TV"}
+                        right={"DISCLAIMER: the data collection process was not entirely scientific or robust"}
+                    />
+                {/if}
                 {#if index == section_count - 1}
                     <WriteUpScreen />
                 {/if}

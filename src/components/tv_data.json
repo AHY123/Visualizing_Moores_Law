@@ -1,0 +1,7 @@
+[
+    {"year": 1953, "original_price": 1000, "inf_adjusted_price": 11600},
+    {"year": 1965, "original_price": 500, "inf_adjusted_price": 4900},
+    {"year": 1971, "original_price": 400, "inf_adjusted_price": 3000},
+    {"year": 1981, "original_price": 500, "inf_adjusted_price": 1700},
+    {"year": 1991, "original_price": 700, "inf_adjusted_price": 1600}
+]
